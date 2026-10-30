@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}What to work on · {{ opp.title }}{% endblock %}
+{% block content %}
+<p class="back"><a href="{% url 'opportunities:detail' opp.slug %}">&larr; {{ opp.title }}</a></p>
+<h1>What to work on</h1>
+{% if not report and not message and not checks %}<p class="notice notice-warn">This needs JavaScript so your saved profile can be used.</p>{% endif %}
+{% include "gaps/partials/result.html" %}
+<p class="small">Your profile is stored in your browser. <a href="{% url 'opportunities:profile' %}">Edit it here</a>.</p>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}For organizations · OppScout AI{% endblock %}
+{% block content %}
+<h1>Post your opportunities on OppScout AI</h1>
+<p>Employers, universities, scholarship providers and NGOs can list jobs, internships, scholarships, grants, fellowships and training here. Students and graduates find them in the public directory and through AI matching.</p>
+
+<div class="notice notice-info">
+  <strong>How this works, and its limits.</strong>
+  <ul class="plain">
+    <li>There are no accounts or passwords. When you register you get a <strong>management key</strong>. Keep it safe: anyone who has it can manage your listings, and we cannot recover it for you.</li>
+    <li>Every new or edited listing is <strong>reviewed by an OppScout administrator</strong> before it goes live.</li>
+    <li>Once live, you can take it offline, close applications, mark it filled or archive it yourself.</li>
+    <li>This is an early prototype. Do not post anything confidential.</li>
+  </ul>
+</div>
+
+<p>
+  {% if org %}
+    <a class="btn" href="{% url 'opportunities:org_dashboard' %}">Open {{ org.name }}'s dashboard</a>
+  {% else %}
+    <a class="btn" href="{% url 'opportunities:org_register' %}">Register my organization</a>
+    <a class="btn btn-ghost" href="{% url 'opportunities:org_access' %}">I already have a key</a>
+  {% endif %}
+</p>
+
+<h2>What you will provide</h2>
+<ul>
+  <li>Your organization's name, type, official email, website and location.</li>
+  <li>For each opportunity: title, category, description, who can apply, requirements, deadline, official application link, and a few fields specific to the category (for example salary range for jobs, or what the funding covers for scholarships).</li>
+</ul>
+{% endblock %}

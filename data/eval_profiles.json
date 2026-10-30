@@ -1,0 +1,45 @@
+[
+  {
+    "name": "Nigerian CS undergraduate interested in AI and software",
+    "profile": {
+      "country": "Nigeria",
+      "education_level": "undergraduate",
+      "field_of_study": "Computer Science",
+      "skills": "Python, HTML, CSS",
+      "interests": "AI engineering, software development",
+      "location_preferences": ["nigeria", "remote_global"]
+    },
+    "relevant": [
+      "3mtt-fellowship-nigeria",
+      "mlh-fellowship-software-engineering",
+      "google-summer-of-code",
+      "outreachy-internship-december-2026"
+    ]
+  },
+  {
+    "name": "Nigerian graduate seeking a master's abroad",
+    "profile": {
+      "country": "Nigeria",
+      "education_level": "graduate",
+      "field_of_study": "Computer Science",
+      "interests": "master's degree, postgraduate study abroad",
+      "categories": ["scholarship"]
+    },
+    "relevant": [
+      "eth-zurich-esop-autumn-2027",
+      "gates-cambridge-scholarship-2027",
+      "chevening-scholarship-2027-28",
+      "commonwealth-masters-scholarship-2027-28"
+    ]
+  },
+  {
+    "name": "Nigerian student with a business idea",
+    "profile": {
+      "country": "Nigeria",
+      "education_level": "undergraduate",
+      "interests": "entrepreneurship, startup, business idea",
+      "career_goals": "Start a technology company"
+    },
+    "relevant": ["tef-entrepreneurship-programme"]
+  }
+]

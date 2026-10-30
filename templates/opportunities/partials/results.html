@@ -1,0 +1,26 @@
+{% if page.paginator.count %}
+  <p class="count">{{ page.paginator.count }} opportunit{{ page.paginator.count|pluralize:"y,ies" }}</p>
+
+  <ul class="opp-list">
+    {% for opp in page %}
+      {% include "partials/opportunity_card.html" %}
+    {% endfor %}
+  </ul>
+
+  {% if page.has_other_pages %}
+    <nav class="pager" aria-label="Pages" hx-boost="true" hx-target="#results" hx-push-url="true">
+      {% if page.has_previous %}
+        <a href="?{% if querystring %}{{ querystring }}&amp;{% endif %}page={{ page.previous_page_number }}">Previous</a>
+      {% endif %}
+      <span>Page {{ page.number }} of {{ page.paginator.num_pages }}</span>
+      {% if page.has_next %}
+        <a href="?{% if querystring %}{{ querystring }}&amp;{% endif %}page={{ page.next_page_number }}">Next</a>
+      {% endif %}
+    </nav>
+  {% endif %}
+{% else %}
+  <div class="empty">
+    <p>No opportunities match these filters.</p>
+    <p class="small">Try removing a filter, or include closed listings.</p>
+  </div>
+{% endif %}

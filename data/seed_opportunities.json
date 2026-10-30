@@ -1,0 +1,486 @@
+[
+  {
+    "slug": "3mtt-fellowship-nigeria",
+    "title": "3MTT Fellowship (3 Million Technical Talent)",
+    "provider": "Federal Ministry of Communications, Innovation & Digital Economy (Nigeria)",
+    "category": "training",
+    "description": "Nigerian federal programme to build a technical talent base for the digital economy. Phase 1 began in December 2023 with 30,000 fellows across all 36 states and the FCT. Phase 2 plans three cohorts of 60,000, 90,000 and 120,000. The fellowship is open to everyone, and there is no fee to apply or to be selected. The programme page does not state a fellow application deadline or a specific cohort window. Sign up at app.3mtt.training/apply and check which cohort is open. Questions: support@3mtt.training.",
+    "benefits": "Hybrid (online and in-person) training of about three months on average, in skills such as AI/Machine Learning, Software Development, Data Science, Data Analysis & Visualization, Cloud Computing, DevOps, Cybersecurity, UI/UX Design, Quality Assurance, Product Management, Game Development and Animation. Financial support covers training costs only. Participants pay for transportation, meals and other costs.",
+    "country": "Nigeria",
+    "work_mode": "hybrid",
+    "education_levels": [],
+    "eligible_regions": [],
+    "excluded_regions": [],
+    "deadline": null,
+    "official_url": "https://3mtt.nitda.gov.ng/",
+    "source_url": "https://3mtt.nitda.gov.ng/",
+    "status": "published",
+    "last_verified": "2026-10-28",
+    "requirements": [
+      {
+        "text": "Complete the entry assessment as part of the application",
+        "type": "mandatory",
+        "category": "other"
+      }
+    ]
+  },
+  {
+    "slug": "mlh-fellowship-software-engineering",
+    "title": "MLH Fellowship: Software Engineering track",
+    "provider": "Major League Hacking",
+    "category": "fellowship",
+    "description": "A 12-week internship alternative for aspiring software engineers. Fellows work in a small group on a real project from one of MLH's partners, which may be open or closed source. The programme is remote-first and open to students and non-students from any educational background. The next batch listed is Spring 2027, from 25 January to 16 April 2027, on Mondays, Wednesdays and Fridays at 20 hours per week. Applications are reviewed on a rolling basis and close a few weeks before each batch starts. The page does not give an exact deadline.",
+    "benefits": "Real project experience with MLH's partners. An educational stipend is offered to offset costs during select programmes. The page does not state the amount or which programmes qualify.",
+    "country": "",
+    "work_mode": "remote",
+    "education_levels": [],
+    "eligible_regions": [
+      "Worldwide"
+    ],
+    "excluded_regions": [],
+    "deadline": null,
+    "official_url": "https://fellowship.mlh.com/programs/software-engineering",
+    "source_url": "https://help.mlh.io/en/articles/645889",
+    "status": "published",
+    "last_verified": "2026-10-28",
+    "requirements": [
+      {
+        "text": "Be over 18 years old",
+        "type": "mandatory",
+        "category": "age"
+      },
+      {
+        "text": "Commit at least 20 hours per week for the full 12 weeks",
+        "type": "mandatory",
+        "category": "other"
+      },
+      {
+        "text": "Be proficient in written and spoken English",
+        "type": "mandatory",
+        "category": "skill"
+      },
+      {
+        "text": "Be available during normal business hours in ET, PT, GMT or IST",
+        "type": "mandatory",
+        "category": "other"
+      },
+      {
+        "text": "Live in a country not embargoed by the United States",
+        "type": "mandatory",
+        "category": "location"
+      },
+      {
+        "text": "Be proficient in at least one programming language",
+        "type": "mandatory",
+        "category": "skill"
+      },
+      {
+        "text": "Have an internet connection good enough for video calls",
+        "type": "mandatory",
+        "category": "other"
+      },
+      {
+        "text": "Previous participation in at least one MLH hackathon or Global Hack Week (listed in MLH's help centre, not on the programme page)",
+        "type": "unclear",
+        "category": "experience"
+      }
+    ]
+  },
+  {
+    "slug": "tef-entrepreneurship-programme",
+    "title": "Tony Elumelu Foundation Entrepreneurship Programme",
+    "provider": "Tony Elumelu Foundation",
+    "category": "grant",
+    "description": "Annual programme for African entrepreneurs, with training, mentoring and seed capital. The programme page says the flagship application portal opens on 1 January and closes at midnight on 1 March, at TEFConnect.com. The page is still titled TEF2025, so confirm the 2027 dates before you plan around them. Applications are a four-part online form: personal information, business idea and experience, a business assessment test, and a declaration. Your name on TEFConnect must match your ID exactly.",
+    "benefits": "US$5,000 non-refundable seed capital, paid after your documents are endorsed. A business management curriculum with self-paced modules and coaching masterclasses (100% of modules must be completed on TEFConnect). Each mentor takes at most three mentees and commits at least two hours of mentoring per mentee every month.",
+    "country": "",
+    "work_mode": "remote",
+    "education_levels": [],
+    "eligible_regions": [
+      "Africa"
+    ],
+    "excluded_regions": [],
+    "deadline": null,
+    "official_url": "https://www.tonyelumelufoundation.org/tef-entrepreneurship-programme",
+    "source_url": "https://www.tonyelumelufoundation.org/tef-entrepreneurship-programme",
+    "status": "published",
+    "last_verified": "2026-10-28",
+    "requirements": [
+      {
+        "text": "Be an African aged 18 or above",
+        "type": "mandatory",
+        "category": "age"
+      },
+      {
+        "text": "Have a business idea, or a business no older than 5 years",
+        "type": "mandatory",
+        "category": "experience"
+      },
+      {
+        "text": "Reside in Africa and plan to establish your business in Africa",
+        "type": "mandatory",
+        "category": "location"
+      },
+      {
+        "text": "Have never benefited from any previous Tony Elumelu Foundation programme",
+        "type": "mandatory",
+        "category": "other"
+      },
+      {
+        "text": "Not have already applied in the same application window of the same year",
+        "type": "mandatory",
+        "category": "other"
+      },
+      {
+        "text": "Upload a valid government-issued ID showing your date of birth and photo, plus a high-resolution headshot",
+        "type": "mandatory",
+        "category": "other"
+      }
+    ]
+  },
+  {
+    "slug": "eth-zurich-esop-autumn-2027",
+    "title": "ETH Zurich Excellence Scholarship & Opportunity Programme (autumn 2027 entry)",
+    "provider": "ETH Zurich",
+    "category": "scholarship",
+    "description": "Scholarship for excellent students starting a Master's programme at ETH Zurich in Switzerland. You apply through eApply, the same online system as the Master's application, in the first application window: 1 to 30 November 2026 for the autumn 2027 intake. About 60 scholarships are planned for the 2027/28 intake, with decisions expected at the end of March. The final decision rests with the ETH Rector, and the number depends on available funds. ESOP is added to a Master's application, so also check the admission requirements of the programme you choose.",
+    "benefits": "CHF 12,000 per semester for living and study costs (CHF 13,500 from autumn 2027 onwards). A tuition fee waiver. Funding for the regular length of the Master's (three or four semesters). Mentorship and a network through the ETH Foundation.",
+    "country": "",
+    "work_mode": "physical",
+    "education_levels": [
+      "graduate"
+    ],
+    "eligible_regions": [],
+    "excluded_regions": [],
+    "deadline": "2026-11-30",
+    "official_url": "https://ethz.ch/students/en/studies/financial/scholarships/excellencescholarship.html",
+    "source_url": "https://ethz.ch/en/studies/master/application/dates.html",
+    "status": "published",
+    "last_verified": "2026-10-28",
+    "requirements": [
+      {
+        "text": "Apply to an ETH Zurich Master's programme (MAS programmes are excluded)",
+        "type": "mandatory",
+        "category": "education"
+      },
+      {
+        "text": "Rank in the top 10% of your Bachelor's programme (grade A, based on self-assessment)",
+        "type": "mandatory",
+        "category": "education"
+      },
+      {
+        "text": "Not be already enrolled in an ETH Master's programme and not hold a Master's degree",
+        "type": "mandatory",
+        "category": "education"
+      },
+      {
+        "text": "Apply in the first application window (1 to 30 November 2026)",
+        "type": "mandatory",
+        "category": "other"
+      },
+      {
+        "text": "Submit the standard Master's admission documents plus a self-written pre-proposal for your Master's thesis",
+        "type": "mandatory",
+        "category": "other"
+      },
+      {
+        "text": "Name two professors as reference persons if your programme does not require references",
+        "type": "unclear",
+        "category": "other"
+      },
+      {
+        "text": "Be reachable by phone at the number on your CV, as a phone or video interview may be held in February",
+        "type": "unclear",
+        "category": "other"
+      }
+    ]
+  },
+  {
+    "slug": "gates-cambridge-scholarship-2027",
+    "title": "Gates Cambridge Scholarship (2027 entry)",
+    "provider": "Gates Cambridge Trust, University of Cambridge",
+    "category": "scholarship",
+    "description": "Postgraduate scholarship at the University of Cambridge for applicants from outside the United Kingdom. For entry in 2027, applications from outside the US opened on 11 September 2026. The deadline is either 8 December 2026 or 6 January 2027, depending on your course: check the course's Course Funding Deadline in the University Course Directory. Full applications are due by 11:59pm UK time. All applicants are notified by 8 March 2027.",
+    "benefits": "The University Composition Fee, and maintenance of GBP 23,152 for 12 months at the 2026-27 rate (PhD awards run for up to 4 years). One economy single airfare at the start and end of the course. Inbound visa costs and the Immigration Health Surcharge. Discretionary funding is considered case by case.",
+    "country": "",
+    "work_mode": "physical",
+    "education_levels": [
+      "graduate",
+      "postgraduate"
+    ],
+    "eligible_regions": [
+      "Worldwide"
+    ],
+    "excluded_regions": [
+      "United Kingdom"
+    ],
+    "deadline": "2026-12-08",
+    "official_url": "https://www.gatescambridge.org/apply/eligibility/",
+    "source_url": "https://www.gatescambridge.org/apply/timeline/",
+    "status": "published",
+    "last_verified": "2026-10-28",
+    "requirements": [
+      {
+        "text": "Be a citizen of a country outside the United Kingdom",
+        "type": "mandatory",
+        "category": "location"
+      },
+      {
+        "text": "Apply for a full-time or part-time PhD, a full-time MLitt, or a full-time one-year postgraduate course (some exceptions apply)",
+        "type": "mandatory",
+        "category": "education"
+      },
+      {
+        "text": "Not apply to fund an undergraduate degree, a MASt, a part-time degree other than a PhD, or a professional or non-standard degree such as an MBA, MFin or PGCE",
+        "type": "mandatory",
+        "category": "education"
+      },
+      {
+        "text": "Not apply to fund the rest of a course you have already started",
+        "type": "mandatory",
+        "category": "education"
+      },
+      {
+        "text": "Selection criterion: outstanding intellectual ability",
+        "type": "preferred",
+        "category": "other"
+      },
+      {
+        "text": "Selection criterion: reasons for your choice of course",
+        "type": "preferred",
+        "category": "other"
+      },
+      {
+        "text": "Selection criterion: a commitment to improving the lives of others",
+        "type": "preferred",
+        "category": "other"
+      },
+      {
+        "text": "Selection criterion: leadership potential",
+        "type": "preferred",
+        "category": "other"
+      }
+    ]
+  },
+  {
+    "slug": "chevening-scholarship-2027-28",
+    "title": "Chevening Scholarship (2027/28)",
+    "provider": "UK Foreign, Commonwealth & Development Office and partners",
+    "category": "scholarship",
+    "description": "UK government scholarship for master's study in the UK, funded by the Foreign, Commonwealth and Development Office and partner organisations. Applications for the 2027/28 cycle are now closed. They opened in August 2026 and closed in October 2026, with the exact day varying by country. Chevening's Nigeria page says to watch its channels for when applications open again. Studies for this cycle begin in September or October 2027.",
+    "benefits": "",
+    "country": "",
+    "work_mode": "physical",
+    "education_levels": [
+      "graduate"
+    ],
+    "eligible_regions": [],
+    "excluded_regions": [],
+    "deadline": null,
+    "official_url": "https://www.chevening.org/scholarship/nigeria/",
+    "source_url": "https://www.chevening.org/resource-hub/guidance/eligibility/",
+    "status": "expired",
+    "last_verified": "2026-10-28",
+    "requirements": [
+      {
+        "text": "Be a citizen of a Chevening-eligible country or territory (Chevening has a Nigeria page, but confirm eligibility on chevening.org)",
+        "type": "mandatory",
+        "category": "location"
+      },
+      {
+        "text": "Commit to returning to your country of award for at least two years after the scholarship ends",
+        "type": "mandatory",
+        "category": "other"
+      },
+      {
+        "text": "Have at least two years (2,800 hours) of work experience acquired after completing your undergraduate degree",
+        "type": "mandatory",
+        "category": "experience"
+      },
+      {
+        "text": "Hold an undergraduate degree that qualifies you for a UK master's programme, completed at least two years before the application deadline",
+        "type": "mandatory",
+        "category": "education"
+      },
+      {
+        "text": "Apply to three different eligible UK university courses and receive an unconditional offer from at least one by the deadline",
+        "type": "mandatory",
+        "category": "education"
+      },
+      {
+        "text": "Not hold British or dual British citizenship, and not be resident in the UK at the time of application",
+        "type": "mandatory",
+        "category": "location"
+      },
+      {
+        "text": "Not have previously studied in the UK on a UK government-funded scholarship",
+        "type": "mandatory",
+        "category": "other"
+      },
+      {
+        "text": "Not be an employee, close relative of an employee, or recent former employee of a UK government department, the British Council or a partner UK university",
+        "type": "mandatory",
+        "category": "other"
+      }
+    ]
+  },
+  {
+    "slug": "commonwealth-masters-scholarship-2027-28",
+    "title": "Commonwealth Master's Scholarship (2027/28)",
+    "provider": "Commonwealth Scholarship Commission in the UK",
+    "category": "scholarship",
+    "description": "Scholarships for master's study in the UK for candidates from eligible Commonwealth countries. Nigeria is on the page's list of eligible countries. You cannot apply to the CSC directly. You apply to a nominator, either a national nominating agency (the main route) or a selected NGO or charitable body, and each nominator sets its own deadlines and criteria. This is the 2027/28 cycle, for study starting in September or October 2027. The page gives the CSC application deadline as 16:00 BST on 20 October 2026 and says nominations are due to the CSC by December 2026. Ask your nominating agency whether anything is still open.",
+    "benefits": "Full tuition fees, paid directly by the CSC and the university. Approved return airfare between your home country and the UK. A monthly stipend of GBP 1,712 (GBP 2,000 for universities in the London area), at current rates. A study travel grant. Child allowances for some Scholars.",
+    "country": "",
+    "work_mode": "physical",
+    "education_levels": [
+      "graduate"
+    ],
+    "eligible_regions": [
+      "Commonwealth"
+    ],
+    "excluded_regions": [],
+    "deadline": "2026-10-20",
+    "official_url": "https://cscuk.fcdo.gov.uk/scholarships/commonwealth-masters-scholarships/",
+    "source_url": "https://cscuk.fcdo.gov.uk/scholarships/commonwealth-masters-scholarships/",
+    "status": "expired",
+    "last_verified": "2026-10-28",
+    "requirements": [
+      {
+        "text": "Be a citizen of, or have refugee status in, an eligible Commonwealth country, or be a British Protected Person",
+        "type": "mandatory",
+        "category": "location"
+      },
+      {
+        "text": "Be permanently resident in an eligible Commonwealth country",
+        "type": "mandatory",
+        "category": "location"
+      },
+      {
+        "text": "By September 2027, hold a first degree of at least upper second-class (2:1) honours standard, or a lower second-class degree plus a relevant postgraduate qualification",
+        "type": "mandatory",
+        "category": "education"
+      },
+      {
+        "text": "Be unable to afford to study in the UK without this scholarship",
+        "type": "mandatory",
+        "category": "other"
+      },
+      {
+        "text": "Commit to returning home after the scholarship ends",
+        "type": "mandatory",
+        "category": "other"
+      },
+      {
+        "text": "Apply through a nominator (national nominating agency, or a selected NGO or charitable body), not directly to the CSC",
+        "type": "mandatory",
+        "category": "other"
+      }
+    ]
+  },
+  {
+    "slug": "outreachy-internship-december-2026",
+    "title": "Outreachy Internship (December 2026 round)",
+    "provider": "Outreachy",
+    "category": "internship",
+    "description": "Three-month paid internships for people who face underrepresentation, systemic bias or discrimination in the technical industry where they live. The December 2026 round runs from 7 December 2026 to 8 March 2027 at 30 hours per week. Its initial application period ran from 24 to 31 August 2026, so it is closed. Dates for the next round are not yet published. Rounds run May to August or December to March.",
+    "benefits": "A stipend of US$7,000 for the three-month internship.",
+    "country": "",
+    "work_mode": "remote",
+    "education_levels": [],
+    "eligible_regions": [],
+    "excluded_regions": [],
+    "deadline": "2026-08-31",
+    "official_url": "https://www.outreachy.org/",
+    "source_url": "https://www.outreachy.org/docs/applicant/",
+    "status": "expired",
+    "last_verified": "2026-10-28",
+    "requirements": [
+      {
+        "text": "Face underrepresentation, systemic bias or discrimination in the technical industry where you live",
+        "type": "mandatory",
+        "category": "other"
+      },
+      {
+        "text": "Be at least 18 years old by 7 December 2026",
+        "type": "mandatory",
+        "category": "age"
+      },
+      {
+        "text": "Be available full-time, 30 hours per week, from 7 December 2026 to 8 March 2027",
+        "type": "mandatory",
+        "category": "other"
+      },
+      {
+        "text": "Not be a past Outreachy, Outreach Program for Women or Google Summer of Code intern",
+        "type": "mandatory",
+        "category": "experience"
+      },
+      {
+        "text": "Not hold another internship, or a full-time job or contracting position, during the internship period (unless you are willing to quit the job)",
+        "type": "mandatory",
+        "category": "other"
+      },
+      {
+        "text": "If you are a university student, have 42 consecutive days free from school and exams during the internship period",
+        "type": "mandatory",
+        "category": "education"
+      }
+    ]
+  },
+  {
+    "slug": "google-summer-of-code",
+    "title": "Google Summer of Code",
+    "provider": "Google",
+    "category": "fellowship",
+    "description": "Google's programme in which contributors work on open source projects with mentoring organisations. Most projects run 12 weeks, with lengths from 8 to 22 weeks. Contributors who pass their evaluations receive a stipend (the amount is not stated on the pages checked). Participants are not employees or interns of Google or the mentoring organisations, and GSoC is not a recruiting programme. In 2026 contributor applications ran from 16 to 31 March. The 2027 timeline has not been published yet.",
+    "benefits": "",
+    "country": "",
+    "work_mode": "remote",
+    "education_levels": [],
+    "eligible_regions": [
+      "Worldwide"
+    ],
+    "excluded_regions": [
+      "Russia",
+      "Belarus"
+    ],
+    "deadline": "2026-03-31",
+    "official_url": "https://developers.google.com/open-source/gsoc/timeline",
+    "source_url": "https://developers.google.com/open-source/gsoc/faq",
+    "status": "expired",
+    "last_verified": "2026-10-28",
+    "requirements": [
+      {
+        "text": "Be at least 18 years old at registration",
+        "type": "mandatory",
+        "category": "age"
+      },
+      {
+        "text": "Be a student or an open source beginner (someone with minimal open source experience)",
+        "type": "mandatory",
+        "category": "experience"
+      },
+      {
+        "text": "Be eligible to work in your country of residence and not reside in a US-embargoed country",
+        "type": "mandatory",
+        "category": "location"
+      },
+      {
+        "text": "Have been accepted into GSoC no more than once before",
+        "type": "mandatory",
+        "category": "experience"
+      },
+      {
+        "text": "Never have been a GSoC mentor or organisation admin",
+        "type": "mandatory",
+        "category": "experience"
+      },
+      {
+        "text": "Submit proposals as an individual, not a group",
+        "type": "mandatory",
+        "category": "other"
+      }
+    ]
+  }
+]

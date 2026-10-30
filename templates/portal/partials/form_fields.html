@@ -1,0 +1,15 @@
+{% if form.non_field_errors %}
+  <div class="notice notice-warn" role="alert">{{ form.non_field_errors }}</div>
+{% endif %}
+{% for field in form %}
+  {% if field.name == "nickname" %}
+    <div class="hp" aria-hidden="true">{{ field.label_tag }} {{ field }}</div>
+  {% elif not field.is_hidden %}
+    <div class="field{% if field.errors %} has-error{% endif %}"{% if field.field.is_extra %} data-extra-key="{{ field.name }}"{% endif %}>
+      {{ field.label_tag }}
+      {{ field }}
+      {% if field.help_text %}<span class="small help">{{ field.help_text }}</span>{% endif %}
+      {% for error in field.errors %}<span class="error" role="alert">{{ error }}</span>{% endfor %}
+    </div>
+  {% endif %}
+{% endfor %}

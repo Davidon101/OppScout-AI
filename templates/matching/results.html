@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Your matches · OppScout AI{% endblock %}
+
+{% block content %}
+<p class="back"><a href="{% url 'opportunities:profile' %}">&larr; Edit my profile</a></p>
+<h1 class="page-title">Your matches</h1>
+<div id="matches">
+  {% include "matching/partials/match_list.html" %}
+</div>
+{% endblock %}

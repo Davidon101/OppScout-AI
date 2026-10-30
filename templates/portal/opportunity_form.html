@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{% if editing %}Edit{% else %}Post{% endif %} an opportunity · OppScout AI{% endblock %}
+{% block content %}
+<p class="back"><a href="{% url 'opportunities:org_dashboard' %}">&larr; Dashboard</a></p>
+<h1>{% if editing %}Edit opportunity{% else %}Post an opportunity{% endif %}</h1>
+{% if reviews_again %}
+  <p class="notice notice-warn">This listing is {{ opp.get_status_display|lower }}. Saving changes sends it back for review, and it will not be visible to the public until an administrator approves it again.</p>
+{% endif %}
+<p class="small">Provide accurate details. Listings are checked before they go live, and applicants rely on what you write here.</p>
+
+<form method="post" id="opp-form" class="stack" novalidate data-extra-map='{{ extra_map_json }}'>
+  {% csrf_token %}
+  {% include "portal/partials/form_fields.html" %}
+  <div class="row-actions">
+    <button type="submit" name="action" value="submit" class="btn">Submit for review</button>
+    {% if not editing or opp.status == "draft" %}
+      <button type="submit" name="action" value="save" class="btn btn-ghost">Save as draft</button>
+    {% endif %}
+  </div>
+</form>
+{% endblock %}

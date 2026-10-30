@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}{{ opp.title }} · OppScout AI{% endblock %}
+{% block meta_description %}{{ opp.provider }}: {{ opp.description|truncatechars:150 }}{% endblock %}
+
+{% block content %}
+<p class="back"><a href="{% url 'opportunities:list' %}">&larr; All opportunities</a></p>
+
+<article class="detail">
+  <header>
+    <div class="badges">
+      <span class="badge">{{ opp.get_category_display }}</span>
+      <span class="badge badge-soft">{{ opp.get_work_mode_display }}</span>
+    </div>
+    <h1>{{ opp.title }}</h1>
+    <p class="provider">{{ opp.provider }}</p>
+    <button type="button" class="btn btn-ghost btn-save" data-save="{{ opp.slug }}" aria-pressed="false" hidden>Save</button>
+  </header>
+
+  {% if opp.closed_notice %}
+    <p class="notice notice-warn">{{ opp.closed_notice }}</p>
+  {% endif %}
+
+  <p class="small posted-by">
+    {% if opp.organization %}
+      Posted by {{ opp.organization.name }}{% if opp.organization.verified %} (verified organization){% else %} (organization not independently verified){% endif %}. Details are written by the organization.
+    {% else %}
+      Researched by OppScout from the official page.
+    {% endif %}
+  </p>
+
+  <dl class="facts">
+    <div>
+      <dt>Deadline</dt>
+      <dd>
+        {% if opp.deadline %}{{ opp.deadline|date:"j F Y" }} ({{ opp.deadline_label }}){% else %}{{ opp.deadline_label }}{% endif %}
+      </dd>
+    </div>
+    <div><dt>Hosted in</dt><dd>{{ opp.country|default:"Not tied to one country" }}</dd></div>
+    <div><dt>Who can apply</dt><dd>{{ opp.eligibility_summary }}</dd></div>
+    <div><dt>Education level</dt><dd>{{ opp.education_levels_display }}</dd></div>
+    <div>
+      <dt>Last verified</dt>
+      <dd>{% if opp.last_verified %}{{ opp.last_verified|date:"j F Y" }}{% else %}Not yet verified{% endif %}</dd>
+    </div>
+  </dl>
+
+  <section>
+    <h2>About</h2>
+    {{ opp.description|linebreaks }}
+  </section>
+
+  {% if opp.detail_items %}
+    <section>
+      <h2>More details</h2>
+      <dl class="facts">
+        {% for label, value in opp.detail_items %}<div><dt>{{ label }}</dt><dd>{{ value }}</dd></div>{% endfor %}
+      </dl>
+    </section>
+  {% endif %}
+
+  {% if opp.benefits %}
+    <section>
+      <h2>Benefits</h2>
+      {{ opp.benefits|linebreaks }}
+    </section>
+  {% endif %}
+
+  <section>
+    <h2>Requirements</h2>
+    {% if has_requirements %}
+      {% if mandatory %}
+        <h3>Mandatory</h3>
+        <ul class="req-list">{% for r in mandatory %}<li>{{ r.text }}</li>{% endfor %}</ul>
+      {% endif %}
+      {% if preferred %}
+        <h3>Preferred</h3>
+        <ul class="req-list">{% for r in preferred %}<li>{{ r.text }}</li>{% endfor %}</ul>
+      {% endif %}
+      {% if unclear %}
+        <h3>Stated, status unclear</h3>
+        <ul class="req-list">{% for r in unclear %}<li>{{ r.text }}</li>{% endfor %}</ul>
+      {% endif %}
+    {% else %}
+      <p>No requirements have been recorded for this listing yet. See the official page.</p>
+    {% endif %}
+  </section>
+
+  {% if ai_available %}
+  <section class="eligibility">
+    <h2>Check my eligibility</h2>
+    <p class="small">Compares the details in your saved profile with the requirements above. Your country, education, field, skills and experience are sent to an AI service to do this. Nothing is stored.</p>
+    <form id="eligibility-form" method="post" action="{% url 'opportunities:check' opp.slug %}"
+          hx-post="{% url 'opportunities:check' opp.slug %}" hx-target="#eligibility-result" hx-indicator="#eligibility-form">
+      {% csrf_token %}
+      <button type="submit" class="btn">Check my eligibility</button>
+      <a class="small" href="{% url 'opportunities:profile' %}">Edit my profile</a>
+    </form>
+    <div id="eligibility-result" aria-live="polite"></div>
+  </section>
+
+  <section class="eligibility">
+    <h2>What am I missing?</h2>
+    <p class="small">Lists the requirements you do not yet clearly meet and one realistic next step for each. The same details are sent to an AI service. Nothing is stored.</p>
+    <form id="gap-form" method="post" action="{% url 'opportunities:gaps' opp.slug %}"
+          hx-post="{% url 'opportunities:gaps' opp.slug %}" hx-target="#gap-result" hx-indicator="#gap-form">
+      {% csrf_token %}
+      <button type="submit" class="btn">Show what to work on</button>
+    </form>
+    <div id="gap-result" aria-live="polite"></div>
+  </section>
+  {% endif %}
+
+  {% if opp.how_to_apply %}
+    <section><h2>How to apply</h2>{{ opp.how_to_apply|linebreaks }}</section>
+  {% endif %}
+  {% if opp.contact_info %}<p class="small">Contact: {{ opp.contact_info }}</p>{% endif %}
+
+  {% if opp.status != "filled" and opp.status != "closed" %}
+    <p><a class="btn" href="{{ opp.official_url }}" target="_blank" rel="noopener noreferrer nofollow">Go to the official page</a></p>
+  {% endif %}
+  <p class="small">Details can change. Confirm everything with the provider before you apply.</p>
+</article>
+{% endblock %}

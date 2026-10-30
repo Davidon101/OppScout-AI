@@ -1,0 +1,66 @@
+{% if form.errors %}
+  <div class="notice notice-warn" role="alert">
+    <ul class="plain">
+      {% for error in form.non_field_errors %}<li>{{ error }}</li>{% endfor %}
+      {% for field in form %}{% for error in field.errors %}<li>{{ field.label }}: {{ error }}</li>{% endfor %}{% endfor %}
+    </ul>
+  </div>
+{% elif result %}
+  <p class="notice notice-info">Scores show how relevant a listing looks for your profile. They are not an eligibility decision. Check the requirements and the official page before you apply.</p>
+
+  {% if not profile.country %}
+    <p class="small">Add your country to hide listings that clearly exclude it.</p>
+  {% endif %}
+
+  {% if result.matches %}
+    <p class="count">{{ result.matches|length }} match{{ result.matches|length|pluralize:"es" }}</p>
+    <ul class="opp-list">
+      {% for m in result.matches %}
+        <li class="opp-card match-card">
+          <div class="match-head">
+            <div class="badges">
+              <span class="badge">{{ m.opportunity.get_category_display }}</span>
+              <span class="badge badge-soft">{{ m.opportunity.get_work_mode_display }}</span>
+            </div>
+            <span class="score" title="Relevance to your profile, not eligibility">{{ m.score|floatformat:0 }}<small>/100</small></span>
+          </div>
+          <h2><a href="{% url 'opportunities:detail' m.opportunity.slug %}">{{ m.opportunity.title }}</a></h2>
+          <p class="provider">{{ m.opportunity.provider }}</p>
+          <p class="meta">
+            {{ m.opportunity.country|default:"Online or international" }} &middot;
+            {{ m.opportunity.education_levels_display }} &middot;
+            {{ m.opportunity.deadline_label }}
+          </p>
+
+          <h3 class="mini">Why it matched</h3>
+          <ul class="reasons">
+            {% for reason in m.reasons %}<li>{{ reason }}</li>{% endfor %}
+          </ul>
+
+          {% if m.attention %}
+            <h3 class="mini">Check before applying</h3>
+            <ul class="attention">
+              {% for note in m.attention %}<li>{{ note }}</li>{% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if m.mandatory_count %}
+            <p class="small">{{ m.mandatory_count }} mandatory requirement{{ m.mandatory_count|pluralize }} listed. <a href="{% url 'opportunities:detail' m.opportunity.slug %}">Review them</a>.</p>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <div class="empty">
+      <p>No open listings match this profile.</p>
+      <p class="small">Try clearing the type filter, or <a href="{% url 'opportunities:list' %}?include_closed=1">browse all listings including closed ones</a>.</p>
+    </div>
+  {% endif %}
+
+  {% if result.hidden_region %}
+    <p class="small">{{ result.hidden_region }} listing{{ result.hidden_region|pluralize }} hidden because the stated eligible regions do not include your country.</p>
+  {% endif %}
+  {% if result.hidden_category %}
+    <p class="small">{{ result.hidden_category }} listing{{ result.hidden_category|pluralize }} hidden because {{ result.hidden_category|pluralize:"it is,they are" }} outside your chosen types.</p>
+  {% endif %}
+{% endif %}

@@ -1,0 +1,14 @@
+<li class="opp-card">
+  <div class="badges">
+    <span class="badge">{{ opp.get_category_display }}</span>
+    <span class="badge badge-soft">{{ opp.get_work_mode_display }}</span>
+  </div>
+  <h2><a href="{% url 'opportunities:detail' opp.slug %}">{{ opp.title }}</a></h2>
+  <p class="provider">{{ opp.provider }}</p>
+  <p class="meta">
+    {{ opp.country|default:"Online or international" }} &middot;
+    {{ opp.education_levels_display }} &middot;
+    <span{% if opp.is_expired %} class="closed"{% endif %}>{{ opp.deadline_label }}</span>
+  </p>
+  <button type="button" class="btn btn-ghost btn-save" data-save="{{ opp.slug }}" aria-pressed="false" hidden>Save</button>
+</li>

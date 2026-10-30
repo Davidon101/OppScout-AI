@@ -1,0 +1,35 @@
+{% if message %}
+  <p class="notice notice-warn" role="status">{{ message }}</p>
+{% endif %}
+
+{% if assessment %}
+  <div class="assessment verdict-{{ assessment.verdict }}">
+    <p class="verdict">{{ assessment.verdict_label }}</p>
+    <p class="small">This compares what you shared with the requirements we recorded. It is not an official decision, and it does not predict whether you will be selected.</p>
+    {% if closed %}<p class="notice notice-warn">This listing appears to be closed.</p>{% endif %}
+
+    {% if assessment.rule_checks %}
+      <h3 class="mini">Checked by rules</h3>
+      <ul class="checks">
+        {% for c in assessment.rule_checks %}
+          <li class="check check-{{ c.status }}"><strong>{{ c.label }}:</strong> {{ c.note }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {% if assessment.criteria %}
+      <h3 class="mini">Requirement by requirement</h3>
+      <ul class="checks">
+        {% for c in assessment.criteria %}
+          <li class="check check-{{ c.status }}">
+            <span class="tag">{% if c.status == "met" %}Looks met{% elif c.status == "not_met" %}Looks not met{% else %}Unclear{% endif %}</span>
+            {{ c.text }}
+            <span class="small block">{{ c.requirement_type|capfirst }}{% if c.evidence %} &middot; Based on: {{ c.evidence }}{% endif %}{% if c.note %} &middot; {{ c.note }}{% endif %}</span>
+          </li>
+        {% endfor %}
+      </ul>
+      {% if assessment.summary %}<p>{{ assessment.summary }}</p>{% endif %}
+      <p class="small">Written by AI from your details. It can be wrong. Confirm everything on the official page.</p>
+    {% endif %}
+  </div>
+{% endif %}

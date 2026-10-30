@@ -1,0 +1,35 @@
+{% if message %}
+  <p class="notice notice-warn" role="status">{{ message }}</p>
+{% endif %}
+
+{% if checks %}
+  <h3 class="mini">Checked by rules</h3>
+  <ul class="checks">
+    {% for c in checks %}
+      <li class="check check-{{ c.status }}"><strong>{{ c.label }}:</strong> {{ c.note }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+{% if report %}
+  <div class="assessment">
+    {% if closed %}<p class="notice notice-warn">This listing appears to be closed.</p>{% endif %}
+    {% if report.gaps %}
+      <h3 class="mini">What to work on</h3>
+      <ol class="gaps">
+        {% for g in report.gaps %}
+          <li class="gap">
+            <span class="tag">{{ g.priority_label }}</span>
+            <strong>{{ g.text }}</strong>
+            <span class="small">{{ g.gap }}</span>
+            <span class="action">Next step: {{ g.action }}</span>
+          </li>
+        {% endfor %}
+      </ol>
+      {% if report.summary %}<p>{{ report.summary }}</p>{% endif %}
+    {% else %}
+      <p>No clear gaps were found from the details you shared. That is not a guarantee. Check the requirements and the official page yourself.</p>
+    {% endif %}
+    <p class="small">Written by AI from your details. It can be wrong, and following a step does not guarantee selection.</p>
+  </div>
+{% endif %}

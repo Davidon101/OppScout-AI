@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Page not found · OppScout AI{% endblock %}
+{% block content %}
+<h1>Page not found</h1>
+<p>That page does not exist, or the listing is no longer published.</p>
+<p><a class="btn" href="{% url 'opportunities:list' %}">Browse opportunities</a></p>
+{% endblock %}

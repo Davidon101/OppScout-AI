@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Opportunities · OppScout AI{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Opportunities</h1>
+
+<form class="filters" id="filters" method="get" action="{% url 'opportunities:list' %}"
+      hx-get="{% url 'opportunities:list' %}" hx-target="#results" hx-push-url="true"
+      hx-trigger="change, submit, keyup changed delay:400ms from:#q">
+  <label class="field field-wide">Search
+    <input type="search" id="q" name="q" value="{{ filters.q }}" placeholder="Title, provider or keyword">
+  </label>
+
+  <label class="field">Type
+    <select name="category">
+      <option value="">All types</option>
+      {% for value, label in categories %}
+        <option value="{{ value }}"{% if filters.category == value %} selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+  </label>
+
+  <label class="field">Country
+    <select name="country">
+      <option value="">Any country</option>
+      {% for c in countries %}
+        <option value="{{ c }}"{% if filters.country == c %} selected{% endif %}>{{ c }}</option>
+      {% endfor %}
+    </select>
+  </label>
+
+  <label class="field">Education level
+    <select name="education_level">
+      <option value="">Any level</option>
+      {% for value, label in levels %}
+        <option value="{{ value }}"{% if filters.education_level == value %} selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+  </label>
+
+  <label class="field">Format
+    <select name="work_mode">
+      <option value="">Any format</option>
+      {% for value, label in modes %}
+        <option value="{{ value }}"{% if filters.work_mode == value %} selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+  </label>
+
+  <label class="check">
+    <input type="checkbox" name="include_closed" value="1"{% if filters.include_closed %} checked{% endif %}>
+    Include closed
+  </label>
+
+  <noscript><button class="btn" type="submit">Apply filters</button></noscript>
+</form>
+
+<div id="results" aria-live="polite">
+  {% include "opportunities/partials/results.html" %}
+</div>
+{% endblock %}

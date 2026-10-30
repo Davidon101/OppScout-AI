@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Saved opportunities · OppScout AI{% endblock %}
+{% block content %}
+<h1>Saved opportunities</h1>
+<p class="small">Your saved list is kept in this browser only. Clearing your browser data removes it, and it does not follow you to another device.</p>
+<form id="saved-form" method="post" action="{% url 'opportunities:saved_list' %}"
+      hx-post="{% url 'opportunities:saved_list' %}" hx-trigger="load" hx-target="#saved-list" hidden>
+  {% csrf_token %}
+</form>
+<div id="saved-list" aria-live="polite">
+  <noscript><p class="notice notice-warn">Saved opportunities need JavaScript.</p></noscript>
+</div>
+{% endblock %}

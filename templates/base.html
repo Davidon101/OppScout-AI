@@ -1,0 +1,39 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}OppScout AI{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}Find opportunities that fit you, see how you compare with the requirements, and learn what to improve next.{% endblock %}">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <script src="{% static 'js/htmx.min.js' %}" defer></script>
+  <script src="{% static 'js/app.js' %}" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container bar">
+      <a class="brand" href="{% url 'opportunities:home' %}">OppScout <span>AI</span></a>
+      <nav class="nav">
+        {% block nav %}
+          <a href="{% url 'opportunities:list' %}">Opportunities</a>
+          <a href="{% url 'opportunities:profile' %}">Find my matches</a>
+          <a href="{% url 'opportunities:saved' %}">Saved</a>
+          <a href="{% url 'opportunities:org_landing' %}">For organizations</a>
+          <a class="nav-muted" href="{% url 'opportunities:login' %}">Log in (demo)</a>
+          <a class="nav-muted" href="{% url 'opportunities:register' %}">Register (demo)</a>
+        {% endblock %}
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>OppScout AI helps you discover and assess opportunities. It does not guarantee eligibility, acceptance, funding or selection. Always confirm details with the official provider.</p>
+    </div>
+  </footer>
+</body>
+</html>

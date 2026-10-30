@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}{{ org.name }} · Dashboard{% endblock %}
+{% block content %}
+<h1>{{ org.name }}</h1>
+<p>
+  {% if org.verified %}<span class="badge">Verified organization</span>{% else %}<span class="badge badge-soft">Not yet verified</span>{% endif %}
+  <a class="small" href="{% url 'opportunities:org_profile' %}">Edit organization details</a>
+</p>
+<p>
+  <a class="btn" href="{% url 'opportunities:org_new' %}">Post an opportunity</a>
+  <form method="post" action="{% url 'opportunities:org_leave' %}" class="inline">{% csrf_token %}<button type="submit" class="btn btn-ghost">Sign out of this browser</button></form>
+</p>
+
+<h2>Your opportunities</h2>
+{% if rows %}
+  <ul class="opp-list">
+    {% for row in rows %}
+      <li class="opp-card">
+        <div class="badges">
+          <span class="badge">{{ row.opp.get_category_display }}</span>
+          <span class="badge badge-soft status-{{ row.opp.status }}">{{ row.opp.get_status_display }}</span>
+        </div>
+        <h2>{% if row.opp.status == "published" %}<a href="{% url 'opportunities:detail' row.opp.slug %}">{{ row.opp.title }}</a>{% else %}{{ row.opp.title }}{% endif %}</h2>
+        <p class="meta">{{ row.help }} &middot; Deadline: {% if row.opp.deadline %}{{ row.opp.deadline|date:"j F Y" }}{% else %}none{% endif %}</p>
+        <div class="row-actions">
+          {% if row.editable %}<a class="btn btn-ghost" href="{% url 'opportunities:org_edit' row.opp.pk %}">Edit</a>{% endif %}
+          {% for action, label in row.actions %}
+            <form method="post" action="{% url 'opportunities:org_status' row.opp.pk %}" class="inline">
+              {% csrf_token %}<input type="hidden" name="action" value="{{ action }}">
+              <button type="submit" class="btn btn-ghost">{{ label }}</button>
+            </form>
+          {% endfor %}
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <div class="empty"><p>You have not posted anything yet.</p></div>
+{% endif %}
+{% endblock %}

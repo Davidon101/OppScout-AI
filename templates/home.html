@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+  <h1>Find What Fits. Become What&rsquo;s Next.</h1>
+  <p class="lead">OppScout AI helps students, graduates and young professionals discover scholarships, internships, fellowships, grants, jobs and training, and see where they stand against the requirements.</p>
+
+  <form class="hero-search" method="get" action="{% url 'opportunities:list' %}" role="search">
+    <label class="visually-hidden" for="hero-q">Search opportunities</label>
+    <input id="hero-q" type="search" name="q" placeholder="Search scholarships, internships, fellowships&hellip;">
+    <button class="btn" type="submit">Search</button>
+  </form>
+
+  <p class="chips">
+    {% for value, label in categories %}
+      <a class="chip" href="{% url 'opportunities:list' %}?category={{ value }}">{{ label }}</a>
+    {% endfor %}
+  </p>
+
+  <p><a class="btn" href="{% url 'opportunities:profile' %}">Find my matches</a></p>
+</section>
+
+{% if featured %}
+<section>
+  <h2 class="section-title">Closing soonest</h2>
+  <ul class="opp-list">
+    {% for opp in featured %}
+      {% include "partials/opportunity_card.html" %}
+    {% endfor %}
+  </ul>
+  <p><a href="{% url 'opportunities:list' %}">See all opportunities &rarr;</a></p>
+</section>
+{% endif %}
+
+<section class="notice notice-info">
+  <strong>Offering an opportunity?</strong> Employers, universities and scholarship providers can post and manage listings here. <a href="{% url 'opportunities:org_landing' %}">Post an opportunity</a>.
+</section>
+
+<section>
+  <h2 class="section-title">How it works</h2>
+  <div class="cards">
+    <article class="card">
+      <h3>1. Tell us about you</h3>
+      <p>Add your country, education, skills and interests. Every field is optional, and your profile stays in your browser.</p>
+    </article>
+    <article class="card">
+      <h3>2. See what fits</h3>
+      <p>Listings are filtered by who can apply, then ranked by how well they match, with the reasons shown. A score is relevance, not an eligibility decision.</p>
+    </article>
+    <article class="card">
+      <h3>3. Check the requirements</h3>
+      <p>Each listing shows its published requirements and a link to the official page. AI eligibility and skill-gap checks are coming next.</p>
+    </article>
+  </div>
+</section>
+{% endblock %}

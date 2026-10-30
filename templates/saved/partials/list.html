@@ -1,0 +1,14 @@
+{% if opportunities %}
+  <p class="count">{{ opportunities|length }} saved</p>
+  <ul class="opp-list">
+    {% for opp in opportunities %}{% include "partials/opportunity_card.html" %}{% endfor %}
+  </ul>
+{% else %}
+  <div class="empty" id="saved-empty">
+    <p>You have not saved anything yet.</p>
+    <p class="small"><a href="{% url 'opportunities:list' %}">Browse opportunities</a> and press Save on the ones you want to come back to.</p>
+  </div>
+{% endif %}
+{% if missing %}
+  <p class="small">{{ missing }} saved listing{{ missing|pluralize }} no longer available.</p>
+{% endif %}

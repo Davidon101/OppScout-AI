@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Eligibility check · {{ opp.title }}{% endblock %}
+{% block content %}
+<p class="back"><a href="{% url 'opportunities:detail' opp.slug %}">&larr; {{ opp.title }}</a></p>
+<h1>Eligibility check</h1>
+{% if not assessment and not message %}<p class="notice notice-warn">Eligibility checks need JavaScript so your saved profile can be used.</p>{% endif %}
+{% include "eligibility/partials/result.html" %}
+<p class="small">Your profile is stored in your browser. <a href="{% url 'opportunities:profile' %}">Edit it here</a>.</p>
+{% endblock %}

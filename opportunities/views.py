@@ -2,7 +2,7 @@ import re
 from urllib.parse import urlencode
 
 from django.core.paginator import Paginator
-from django.db.models import F, Q
+from django.db.models import Count, F, Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
@@ -39,10 +39,15 @@ def home(request):
     })
     open_listings = list(Opportunity.objects.published().open().prefetch_related("requirements"))
     sample_matches = rank_opportunities(sample, open_listings, today=timezone.localdate()).matches[:3]
+    live = Opportunity.objects.published().open()
+    counts = dict(live.values_list("category").annotate(n=Count("id")).values_list("category", "n"))
+    type_tiles = [(v, label, counts.get(v, 0)) for v, label in Opportunity.Category.choices]
     return render(
         request,
         "home.html",
         {
+            "type_tiles": type_tiles,
+            "live_count": live.count(),
             "featured": featured,
             "categories": Opportunity.Category.choices,
             "sample_matches": sample_matches,

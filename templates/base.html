@@ -32,10 +32,6 @@
           <a href="{% url 'opportunities:org_landing' %}"{% if nav|slice:":4" == 'org_' %} aria-current="page"{% endif %}>For organizations</a>
         {% endblock %}
       </nav>
-      <div class="nav-quiet">
-        <a href="{% url 'opportunities:login' %}">Log in (demo)</a>
-        <a href="{% url 'opportunities:register' %}">Register (demo)</a>
-      </div>
     </div>
   </header>
 
@@ -62,11 +58,6 @@
         <ul class="plain">
           <li><a href="{% url 'opportunities:org_landing' %}">Post an opportunity</a></li>
           <li><a href="{% url 'opportunities:org_access' %}">Open my dashboard</a></li>
-        </ul>
-        <p class="footer-head">Demo screens</p>
-        <ul class="plain">
-          <li><a href="{% url 'opportunities:login' %}">Log in (demo)</a></li>
-          <li><a href="{% url 'opportunities:register' %}">Register (demo)</a></li>
         </ul>
       </div>
     </div>

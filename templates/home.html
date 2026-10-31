@@ -3,6 +3,7 @@
 {% block content %}
 <section class="hero">
   <div>
+    <p class="hero-pill">{% include "partials/icon.html" with name="spark" %}{{ live_count }} open opportunit{{ live_count|pluralize:"y,ies" }} right now</p>
     <h1>Find What Fits. Become What&rsquo;s Next.</h1>
     <p class="lead">Scholarships, internships, fellowships, grants, jobs and training for students, graduates and young professionals. See what fits you, and where you stand against each requirement.</p>
 
@@ -45,6 +46,21 @@
   </aside>
   {% endif %}
 </section>
+
+{% if type_tiles %}
+<section class="section">
+  <div class="section-head"><h2>Browse by type</h2></div>
+  <ul class="type-grid">
+    {% for value, label, n in type_tiles %}
+      <li><a class="type-tile" href="{% url 'opportunities:list' %}?category={{ value }}">
+        <span class="tile tile-lg">{% include "partials/category_icon.html" with category=value %}</span>
+        <span class="type-name">{{ label }}</span>
+        <span class="type-count">{{ n }} open</span>
+      </a></li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
 
 {% if featured %}
 <section class="section">

@@ -1,20 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %}Register (demo) · OppScout AI{% endblock %}
+{% block title %}Create an account · OppScout AI{% endblock %}
 
 {% block content %}
 <section class="auth">
-  <h1>Create an account</h1>
-  <p class="notice notice-warn">{% include "partials/icon.html" with name="alert" %}<span><strong>Demo screen.</strong> Accounts are not enabled in this version. Nothing here is sent or stored, and there is no password to create. Continue as a guest to use every feature.</span></p>
-
-  <div class="auth-card auth-form" aria-disabled="true">
-    <label class="field">Full name <input type="text" disabled placeholder="Your name"></label>
-    <label class="field">Email <input type="email" disabled placeholder="you@example.com"></label>
-    <label class="field">Password <input type="password" disabled placeholder="Not used in the demo"></label>
-    <button class="btn btn-disabled" type="button" disabled>Create account</button>
-  </div>
-
-  <p><a class="btn" href="{% url 'opportunities:profile' %}">Continue as guest</a></p>
-  <p class="small">Already have an account? <a href="{% url 'opportunities:login' %}">See the login screen</a>.</p>
+  <h1>Accounts are not available yet</h1>
+  <p>You do not need one. Search, matching, eligibility checks and saved opportunities all work as a guest, and your details stay in this browser.</p>
+  <p class="actions"><a class="btn" href="{% url 'opportunities:profile' %}">Continue as guest</a><a class="btn btn-ghost" href="{% url 'opportunities:list' %}">Browse opportunities</a></p>
 </section>
 {% endblock %}

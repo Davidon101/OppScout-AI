@@ -145,19 +145,15 @@ class MatchResultsTests(TestCase):
             self.post({"country": "Nigeria"})
 
 
-class DemoScreenTests(TestCase):
-    def test_login_and_register_are_clearly_demo_and_collect_nothing(self):
+class AccountPageTests(TestCase):
+    def test_login_and_register_collect_nothing_and_point_to_guest_use(self):
         for name in ("login", "register"):
             response = self.client.get(reverse(f"opportunities:{name}"))
             self.assertEqual(response.status_code, 200)
-            self.assertContains(response, "Demo screen")
             self.assertContains(response, "Continue as guest")
             self.assertNotContains(response, "<form")
             self.assertNotContains(response, 'name="password"')
-
-    def test_demo_password_fields_are_disabled(self):
-        response = self.client.get(reverse("opportunities:login"))
-        self.assertContains(response, 'type="password" disabled')
+            self.assertNotContains(response, "demo")
 
 
 class HomePageTests(TestCase):
@@ -166,7 +162,7 @@ class HomePageTests(TestCase):
         self.assertContains(response, 'role="search"')
         self.assertContains(response, "?category=scholarship")
         self.assertContains(response, "How it works")
-        self.assertContains(response, "Log in (demo)")
+        self.assertNotContains(response, "demo")
 
     def test_featured_shows_open_published_listings_soonest_first(self):
         today = timezone.localdate()

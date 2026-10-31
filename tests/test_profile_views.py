@@ -146,14 +146,9 @@ class MatchResultsTests(TestCase):
 
 
 class AccountPageTests(TestCase):
-    def test_login_and_register_collect_nothing_and_point_to_guest_use(self):
-        for name in ("login", "register"):
-            response = self.client.get(reverse(f"opportunities:{name}"))
-            self.assertEqual(response.status_code, 200)
-            self.assertContains(response, "Continue as guest")
-            self.assertNotContains(response, "<form")
-            self.assertNotContains(response, 'name="password"')
-            self.assertNotContains(response, "demo")
+    def test_old_login_and_register_urls_lead_to_the_account_pages(self):
+        self.assertRedirects(self.client.get(reverse("opportunities:login")), "/accounts/login/", fetch_redirect_response=False)
+        self.assertRedirects(self.client.get(reverse("opportunities:register")), "/accounts/signup/", fetch_redirect_response=False)
 
 
 class HomePageTests(TestCase):

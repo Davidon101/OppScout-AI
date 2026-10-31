@@ -457,3 +457,22 @@ body { background:
 @media (max-width: 799px) { .site-footer { padding-bottom: calc(2rem + var(--tabbar-h)); } }
 
 @media (prefers-reduced-motion: reduce) { .type-tile, .opp-card, .btn { transition: none; } .type-tile:hover, .opp-card:hover { transform: none; } }
+
+/* ---- accounts ---- */
+.acct { display: flex; align-items: center; gap: .5rem; }
+.acct-link { display: inline-flex; align-items: center; gap: .35rem; font-weight: 600; font-size: .92rem; color: var(--ink); text-decoration: none; padding: .45rem .6rem; border-radius: var(--r-pill); }
+.acct-link:hover { background: var(--paper); }
+@media (max-width: 879px) { .acct-link span { display: none; } .acct-join { display: none; } .bar { gap: .5rem; } }
+.auth-page { max-width: 30rem; margin-inline: auto; }
+.auth-page h1 { font-size: clamp(1.7rem, 5vw, 2.2rem); }
+.auth-page .auth-card .field + .field { margin-top: .9rem; }
+.auth-page .auth-card .actions { margin-top: 1.1rem; }
+.auth-page .help { display: block; font-size: .85rem; color: var(--muted); margin-top: .3rem; }
+.auth-page .help ul { margin: .3rem 0 0; padding-left: 1.1rem; }
+.btn-wide { width: 100%; }
+.btn-google .icon { width: 20px; height: 20px; }
+.providers { margin: 0; padding: 0; list-style: none; }
+.or-sep { display: flex; align-items: center; gap: .75rem; color: var(--muted); font-size: .9rem; margin: 1.25rem 0; }
+.or-sep::before, .or-sep::after { content: ""; height: 1px; background: var(--line-strong); flex: 1; }
+.auth-page .field input[type=checkbox] { width: auto; }
+.auth-page .messages, .auth-page .notice { margin-bottom: 1rem; }

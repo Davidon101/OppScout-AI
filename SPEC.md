@@ -11,10 +11,10 @@ Last updated: 2026-10-28. Source: the final technical specification (database sc
 | Frontend | HTML, CSS, HTMX |
 | Backend | Python, Django |
 | Database | PostgreSQL on Neon in production. SQLite locally when `DATABASE_URL` is unset. |
-| Visitor authentication | None. Login and register are labelled demo screens, with a guest path as the real route. |
+| Visitor authentication | Optional accounts (v13): Google sign-in and email + password via django-allauth, email through Brevo's API. Guests still work with browser-only storage. |
 | Admin | Django Admin, with real admin authentication |
-| Profiles | Browser storage. Sent per request, never logged, not stored. |
-| Saved opportunities | Browser storage |
+| Profiles | Browser storage for guests. Signed-in users also have the profile fields stored on their account (`UserData`). Sent per request, never logged. |
+| Saved opportunities | Browser storage, plus the account for signed-in users |
 | Opportunity data | Curated by hand, loaded through Admin or `load_opportunities` |
 | Matching | Explicit Python filters, then embedding similarity, then ranking, then explanations |
 | Eligibility | LLM call with validated structured output, assessing only the stored requirements |
@@ -57,7 +57,7 @@ The extra `unclear` type is deliberate. Some published requirements cannot be cl
 
 ### Not stored in the database
 
-Profiles, saved opportunities and assessment results. This follows the spec.
+Assessment results. Guests' profiles and saved lists stay in the browser. Signed-in users' profile fields and saved slugs are stored on their account (`UserData`).
 
 ## Project structure, compared with the spec
 
@@ -83,6 +83,7 @@ Shared partials are in `templates/partials/`; page-specific ones sit next to the
 | 5 | Skill-gap analysis, saved opportunities | Built and tested with a fake provider (204 tests, 14-check Chromium run). Gap analysis not yet run against live Gemini. |
 | 7a | Organization portal | Built: 250 tests, 17-check Chromium run. Needs migration 0003. |
 | 6 | Tests, error handling, deployment hardening | Done locally: `check --deploy` clean apart from two deliberate HSTS warnings, gunicorn smoke test with DEBUG off (redirect, static, 404 page, CSRF, headers), 206 tests. **Not deployed yet.** See `DEPLOY.md`. |
+| 8 | Accounts | Built (v13): 271 tests, two-device browser check. Needs your Google and Brevo keys in Render (`ACCOUNTS.md`). Not yet tried with real Google or Brevo. |
 | 7b | UI redesign | Done (v11). All pages restyled, checked in Chromium at 1280 and 390 px, no horizontal overflow. |
 | 7 | Evaluation, README, demo | |
 

@@ -246,6 +246,105 @@
     apply();
   }
 
+
+  // Signed-in visitors: keep the profile and saved list on their account too,
+  // so they follow them between devices. The browser copy still works on its
+  // own, and guests never talk to this endpoint.
+  var signedIn = document.body && document.body.getAttribute("data-auth") === "1";
+  var pushTimer = null;
+  var profileCleared = false;
+
+  function csrfToken() {
+    var m = document.cookie.match(/(?:^|; )csrftoken=([^;]+)/);
+    return m ? decodeURIComponent(m[1]) : "";
+  }
+
+  function pushAccount() {
+    if (!signedIn) {
+      return;
+    }
+    window.clearTimeout(pushTimer);
+    pushTimer = window.setTimeout(function () {
+      var body = { saved: loadSaved() };
+      var profile = loadProfile();
+      if (profile) {
+        body.profile = profile;
+      } else if (profileCleared) {
+        body.profile = {};
+      }
+      fetch("/account-data/", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json", "X-CSRFToken": csrfToken() },
+        body: JSON.stringify(body)
+      }).catch(function () { /* offline: the browser copy is still there */ });
+    }, 600);
+  }
+
+  function pullAccount() {
+    if (!signedIn || !window.fetch) {
+      return;
+    }
+    fetch("/account-data/", { credentials: "same-origin" })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (remote) {
+        if (!remote) {
+          return;
+        }
+        var local = loadSaved();
+        var merged = local.slice();
+        (remote.saved || []).forEach(function (slug) {
+          if (typeof slug === "string" && merged.indexOf(slug) === -1 && merged.length < SAVED_MAX) {
+            merged.push(slug);
+          }
+        });
+        var changed = merged.length !== local.length;
+        if (changed) {
+          storeSaved(merged);
+        }
+        var form = document.getElementById("profile-form");
+        var haveLocalProfile = !!loadProfile();
+        if (!haveLocalProfile && remote.profile && Object.keys(remote.profile).length) {
+          saveProfile(remote.profile);
+          if (form) {
+            writeForm(form, remote.profile);
+            var status = document.getElementById("profile-status");
+            if (status) {
+              status.textContent = "Loaded your profile from your account.";
+            }
+          }
+        }
+        syncSaveButtons();
+        // Push whatever the browser had that the account did not.
+        if (changed || (haveLocalProfile && !(remote.profile && Object.keys(remote.profile).length)) ||
+            (remote.saved || []).length !== merged.length) {
+          pushAccount();
+        }
+      })
+      .catch(function () { /* keep working from the browser copy */ });
+  }
+
+  document.addEventListener("input", function (evt) {
+    if (evt.target && evt.target.form && evt.target.form.id === "profile-form") {
+      pushAccount();
+    }
+  });
+  document.addEventListener("change", function (evt) {
+    if (evt.target && evt.target.form && evt.target.form.id === "profile-form") {
+      pushAccount();
+    }
+  });
+  document.addEventListener("click", function (evt) {
+    var t = evt.target.closest ? evt.target.closest("[data-save], #clear-profile") : null;
+    if (t) {
+      if (t.id === "clear-profile") {
+        profileCleared = true;
+      }
+      window.setTimeout(pushAccount, 0);
+    }
+  });
+  document.addEventListener("DOMContentLoaded", pullAccount);
+
   document.addEventListener("DOMContentLoaded", initOppForm);
   document.addEventListener("DOMContentLoaded", syncSaveButtons);
   document.addEventListener("DOMContentLoaded", init);

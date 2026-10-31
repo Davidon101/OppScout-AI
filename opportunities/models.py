@@ -2,6 +2,7 @@ import hashlib
 import secrets
 
 from django.core.exceptions import ValidationError
+from django.conf import settings
 from django.db import models
 from django.db.models import Q
 from django.utils import timezone
@@ -32,6 +33,10 @@ class Organization(models.Model):
         help_text="Tick only after you have checked the organization is real (website, email domain).",
     )
     key_hash = models.CharField(max_length=64, unique=True, editable=False)
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL,
+        related_name="organizations", help_text="The signed-in account that manages this organization.",
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -346,3 +351,17 @@ class AIUsage(models.Model):
 
     def __str__(self):
         return f"{self.key}: {self.count}"
+
+
+class UserData(models.Model):
+    """What a signed-in visitor chose to keep: the profile fields they typed
+    and the slugs of listings they saved. Guests keep this in their browser
+    only. Nothing here is used for anything except showing it back to them."""
+
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="oppscout_data")
+    profile = models.JSONField(default=dict, blank=True)
+    saved = models.JSONField(default=list, blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Saved data for {self.user}"

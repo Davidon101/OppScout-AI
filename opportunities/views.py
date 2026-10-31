@@ -3,8 +3,11 @@ from urllib.parse import urlencode
 
 from django.core.paginator import Paginator
 from django.db.models import Count, F, Q
+import json
+
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 from django.views.decorators.vary import vary_on_headers
@@ -19,7 +22,7 @@ from ai_engine.regions import COUNTRY_NAMES
 from . import limits
 from .forms import ProfileForm
 from .services import get_provider
-from .models import Opportunity, OpportunityRequirement
+from .models import Opportunity, OpportunityRequirement, UserData
 
 PAGE_SIZE = 12
 
@@ -60,12 +63,12 @@ def healthz(request):
     return JsonResponse({"status": "ok"})
 
 
-def login_demo(request):
-    return render(request, "accounts/login.html")
+def login_page(request):
+    return redirect("account_login")
 
 
-def register_demo(request):
-    return render(request, "accounts/register.html")
+def register_page(request):
+    return redirect("account_signup")
 
 
 def clean_filters(params):
@@ -353,10 +356,11 @@ def saved_page(request):
 @vary_on_headers("HX-Request")
 def saved_list(request):
     """Cards for the slugs the browser has saved. The list itself is never stored."""
-    slugs = [
-        s for s in dict.fromkeys(request.POST.get("slugs", "").split(","))
-        if _SLUG_RE.match(s)
-    ][:SAVED_MAX]
+    posted = request.POST.get("slugs", "").split(",")
+    if request.user.is_authenticated:
+        # Signed-in visitors also see what they saved on other devices.
+        posted = list(_user_data(request.user).saved) + posted
+    slugs = [s for s in dict.fromkeys(posted) if _SLUG_RE.match(s)][:SAVED_MAX]
     found = {
         o.slug: o
         for o in Opportunity.objects.visible().filter(slug__in=slugs)
@@ -369,3 +373,78 @@ def saved_list(request):
     )
     response["Cache-Control"] = "no-store"
     return response
+
+
+PROFILE_TEXT_KEYS = ("country", "education_level", "field_of_study", "current_qualification",
+                     "skills", "interests", "experience", "career_goals")
+PROFILE_LIST_KEYS = ("categories", "location_preferences")
+
+
+def _user_data(user):
+    data, _ = UserData.objects.get_or_create(user=user)
+    return data
+
+
+def clean_profile(raw):
+    """Keep only the known profile fields, with sane sizes. Never trusts the client."""
+    if not isinstance(raw, dict):
+        return {}
+    out = {}
+    for key in PROFILE_TEXT_KEYS:
+        value = raw.get(key)
+        if isinstance(value, str) and value.strip():
+            out[key] = value.strip()[:2000]
+    for key in PROFILE_LIST_KEYS:
+        value = raw.get(key)
+        if isinstance(value, list):
+            out[key] = [v[:50] for v in value if isinstance(v, str)][:20]
+    return out
+
+
+def clean_saved(raw):
+    if not isinstance(raw, list):
+        return []
+    return [s for s in dict.fromkeys(raw) if isinstance(s, str) and _SLUG_RE.match(s)][:SAVED_MAX]
+
+
+def account_data(request):
+    """The signed-in visitor's profile and saved list, so they follow them between devices."""
+    if not request.user.is_authenticated:
+        return JsonResponse({"error": "Sign in to sync."}, status=401)
+    data = _user_data(request.user)
+    if request.method == "POST":
+        if not limits.within_limit(request, "userdata", 240, per="hour"):
+            return JsonResponse({"error": "Too many updates. Try again later."}, status=429)
+        try:
+            body = json.loads(request.body[:20000] or b"{}")
+        except ValueError:
+            return JsonResponse({"error": "Invalid data."}, status=400)
+        if not isinstance(body, dict):
+            return JsonResponse({"error": "Invalid data."}, status=400)
+        if "profile" in body:
+            data.profile = clean_profile(body["profile"])
+        if "saved" in body:
+            data.saved = clean_saved(body["saved"])
+        data.save()
+    elif request.method != "GET":
+        return JsonResponse({"error": "Method not allowed."}, status=405)
+    response = JsonResponse({"profile": data.profile, "saved": data.saved})
+    response["Cache-Control"] = "no-store"
+    return response
+
+
+@login_required
+def account_home(request):
+    data = _user_data(request.user)
+    return render(request, "account/home.html", {
+        "has_profile": bool(data.profile), "saved_count": len(data.saved),
+        "organizations": request.user.organizations.all(),
+    })
+
+
+@login_required
+@require_POST
+def account_forget(request):
+    """Remove the stored profile and saved list. The account itself stays."""
+    UserData.objects.filter(user=request.user).delete()
+    return redirect("opportunities:account_home")

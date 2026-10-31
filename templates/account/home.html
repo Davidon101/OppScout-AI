@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}My account · OppScout AI{% endblock %}
+{% block content %}
+<div class="page-head">
+  <h1>My account</h1>
+  <p>Signed in as <strong>{{ user.email|default:user.get_username }}</strong>.</p>
+</div>
+
+<div class="split with-aside">
+  <div class="stack">
+    <section class="panel">
+      <h2>What is saved for you</h2>
+      <ul class="req-list">
+        <li>{% include "partials/icon.html" with name="match" %}<span>{% if has_profile %}Your profile is saved to your account, so it follows you to other devices.{% else %}No profile saved yet. <a href="{% url 'opportunities:profile' %}">Fill it in</a> and it will be saved here.{% endif %}</span></li>
+        <li>{% include "partials/icon.html" with name="bookmark" %}<span>{{ saved_count }} saved opportunit{{ saved_count|pluralize:"y,ies" }}. <a href="{% url 'opportunities:saved' %}">Open saved</a></span></li>
+      </ul>
+      <p class="small">Your profile is used only to rank listings and, when you press the button, to compare you with a listing's requirements. We do not share it.</p>
+      <form method="post" action="{% url 'opportunities:account_forget' %}" onsubmit="return confirm('Remove your saved profile and saved list from your account?');">
+        {% csrf_token %}<button type="submit" class="btn btn-ghost btn-sm">Remove my saved profile and list</button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h2>Your organizations</h2>
+      {% if organizations %}
+        <ul class="req-list">{% for o in organizations %}<li>{% include "partials/icon.html" with name="building" %}<span>{{ o.name }}</span></li>{% endfor %}</ul>
+        <p><a class="btn btn-sm" href="{% url 'opportunities:org_dashboard' %}">Open the organization dashboard</a></p>
+      {% else %}
+        <p>Offering opportunities? Register your organization while signed in, and you will manage it from this account without a key.</p>
+        <p class="actions"><a class="btn btn-sm" href="{% url 'opportunities:org_register' %}">Register an organization</a><a class="btn btn-ghost btn-sm" href="{% url 'opportunities:org_access' %}">I have a management key</a></p>
+      {% endif %}
+    </section>
+  </div>
+
+  <aside class="stack">
+    <section class="panel">
+      <h2>Sign-in</h2>
+      <ul class="plain">
+        <li><a href="{% url 'account_email' %}">Email addresses</a></li>
+        <li><a href="{% url 'account_change_password' %}">Change or set a password</a></li>
+        <li><a href="{% url 'socialaccount_connections' %}">Connected Google account</a></li>
+      </ul>
+      <form method="post" action="{% url 'account_logout' %}" style="margin-top:1rem">{% csrf_token %}<button type="submit" class="btn btn-ghost btn-sm">Sign out</button></form>
+    </section>
+  </aside>
+</div>
+{% endblock %}

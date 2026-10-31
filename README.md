@@ -53,3 +53,4 @@ Evaluate matching quality against the labelled profiles: `python manage.py evalu
 - Day 7a: organization portal at `/for-organizations/` (key-based, no logins; listings are approved by an admin). Run `python manage.py migrate` for migration 0003.
 - Redesign (v11): new visual system (see `DESIGN.md`): self-hosted Bricolage Grotesque and Public Sans, fit rings, icon sprite, mobile tab bar, every page restyled. No behaviour changes; 250 tests pass.
 - v12: polish pass (hero, browse-by-type, depth, dark footer) and all demo wording removed. Login and register pages now say accounts are not available and point to guest use; they are no longer linked from the menu.
+- v13: optional accounts. Google sign-in and email + password (allauth), email through Brevo's API, profile and saved list synced to the account, organizations managed from an account. Setup steps are in `ACCOUNTS.md`. Guests are unaffected.

@@ -1,0 +1,9 @@
+{% for field in attrs.form %}{% if field.is_hidden %}{{ field }}{% else %}
+<div class="field{% if field.errors %} has-error{% endif %}">
+  {{ field.label_tag }}
+  {{ field }}
+  {% if field.help_text %}<span class="help">{{ field.help_text|safe }}</span>{% endif %}
+  {% for error in field.errors %}<span class="error" role="alert">{{ error }}</span>{% endfor %}
+</div>
+{% endif %}{% endfor %}
+{% if attrs.form.non_field_errors %}<div class="notice notice-warn" role="alert">{% for e in attrs.form.non_field_errors %}<span>{{ e }}</span>{% endfor %}</div>{% endif %}

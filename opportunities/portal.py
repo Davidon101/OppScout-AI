@@ -68,12 +68,14 @@ def available_actions(status):
 
 def current_org(request):
     data = request.session.get(SESSION_KEY)
-    if not (isinstance(data, list) and len(data) == 2):
-        return None
-    org = Organization.objects.filter(pk=data[0]).first()
-    # A new key (issued by an admin) ends older sessions.
-    if org and org.key_hash[:16] == data[1]:
-        return org
+    if isinstance(data, list) and len(data) == 2:
+        org = Organization.objects.filter(pk=data[0]).first()
+        # A new key (issued by an admin) ends older sessions.
+        if org and org.key_hash[:16] == data[1]:
+            return org
+    # A signed-in owner needs no key.
+    if request.user.is_authenticated:
+        return request.user.organizations.order_by("pk").first()
     return None
 
 
@@ -108,6 +110,8 @@ def register(request):
             org = form.save(commit=False)
             raw = "ops_" + secrets.token_urlsafe(24)
             org.key_hash = Organization.hash_key(raw)
+            if request.user.is_authenticated:
+                org.owner = request.user
             org.save()
             start_session(request, org)
             return render(request, "portal/key_created.html", {"org": org, "key": raw})
@@ -124,6 +128,10 @@ def access(request):
             org = Organization.for_key(request.POST.get("key", ""))
             if org:
                 start_session(request, org)
+                if request.user.is_authenticated and org.owner_id is None:
+                    # First sign-in with the key links the organization to this account.
+                    org.owner = request.user
+                    org.save(update_fields=["owner"])
                 return redirect("opportunities:org_dashboard")
             error = "That key was not recognised. Check for extra characters, or ask an administrator for a new one."
     return render(request, "portal/access.html", {"error": error})
@@ -131,7 +139,7 @@ def access(request):
 
 @require_POST
 def leave(request):
-    request.session.flush()
+    request.session.pop(SESSION_KEY, None)
     return redirect("opportunities:org_landing")
 
 

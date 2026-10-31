@@ -3,37 +3,82 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#2447F5">
   <title>{% block title %}OppScout AI{% endblock %}</title>
   <meta name="description" content="{% block meta_description %}Find opportunities that fit you, see how you compare with the requirements, and learn what to improve next.{% endblock %}">
+  <link rel="preload" href="{% static 'fonts/bricolage-grotesque-latin-wght-normal.woff2' %}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{% static 'fonts/public-sans-latin-wght-normal.woff2' %}" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="{% static 'css/fonts.css' %}">
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
   <script src="{% static 'js/htmx.min.js' %}" defer></script>
   <script src="{% static 'js/app.js' %}" defer></script>
 </head>
 <body>
+  {% include "partials/sprite.html" %}
+  {% with nav=request.resolver_match.url_name %}
+  <a class="skip-link" href="#main">Skip to content</a>
+
   <header class="site-header">
     <div class="container bar">
-      <a class="brand" href="{% url 'opportunities:home' %}">OppScout <span>AI</span></a>
-      <nav class="nav">
+      <a class="brand" href="{% url 'opportunities:home' %}" aria-label="OppScout AI home">
+        <span class="brand-mark">{% include "partials/icon.html" with name="compass" %}</span>
+        <span class="brand-name">OppScout <b>AI</b></span>
+      </a>
+      <nav class="nav" aria-label="Main">
         {% block nav %}
-          <a href="{% url 'opportunities:list' %}">Opportunities</a>
-          <a href="{% url 'opportunities:profile' %}">Find my matches</a>
-          <a href="{% url 'opportunities:saved' %}">Saved</a>
-          <a href="{% url 'opportunities:org_landing' %}">For organizations</a>
-          <a class="nav-muted" href="{% url 'opportunities:login' %}">Log in (demo)</a>
-          <a class="nav-muted" href="{% url 'opportunities:register' %}">Register (demo)</a>
+          <a href="{% url 'opportunities:list' %}"{% if nav == 'list' or nav == 'detail' %} aria-current="page"{% endif %}>Opportunities</a>
+          <a href="{% url 'opportunities:profile' %}"{% if nav == 'profile' or nav == 'matches' %} aria-current="page"{% endif %}>Find my matches</a>
+          <a href="{% url 'opportunities:saved' %}"{% if nav == 'saved' %} aria-current="page"{% endif %}>Saved</a>
+          <a href="{% url 'opportunities:org_landing' %}"{% if nav|slice:":4" == 'org_' %} aria-current="page"{% endif %}>For organizations</a>
         {% endblock %}
       </nav>
+      <div class="nav-quiet">
+        <a href="{% url 'opportunities:login' %}">Log in (demo)</a>
+        <a href="{% url 'opportunities:register' %}">Register (demo)</a>
+      </div>
     </div>
   </header>
 
-  <main class="container">
+  <main id="main" class="container page">
     {% block content %}{% endblock %}
   </main>
 
   <footer class="site-footer">
-    <div class="container">
-      <p>OppScout AI helps you discover and assess opportunities. It does not guarantee eligibility, acceptance, funding or selection. Always confirm details with the official provider.</p>
+    <div class="container footer-grid">
+      <div>
+        <p class="brand-name">OppScout <b>AI</b></p>
+        <p class="small">OppScout AI helps you discover and assess opportunities. It does not guarantee eligibility, acceptance, funding or selection. Always confirm details with the official provider.</p>
+      </div>
+      <div>
+        <p class="footer-head">Explore</p>
+        <ul class="plain">
+          <li><a href="{% url 'opportunities:list' %}">Opportunities</a></li>
+          <li><a href="{% url 'opportunities:profile' %}">Find my matches</a></li>
+          <li><a href="{% url 'opportunities:saved' %}">Saved</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-head">Organizations</p>
+        <ul class="plain">
+          <li><a href="{% url 'opportunities:org_landing' %}">Post an opportunity</a></li>
+          <li><a href="{% url 'opportunities:org_access' %}">Open my dashboard</a></li>
+        </ul>
+        <p class="footer-head">Demo screens</p>
+        <ul class="plain">
+          <li><a href="{% url 'opportunities:login' %}">Log in (demo)</a></li>
+          <li><a href="{% url 'opportunities:register' %}">Register (demo)</a></li>
+        </ul>
+      </div>
     </div>
   </footer>
+
+  <nav class="tabbar" aria-label="Quick links">
+    <a href="{% url 'opportunities:home' %}"{% if nav == 'home' %} aria-current="page"{% endif %}>{% include "partials/icon.html" with name="home" %}<span>Home</span></a>
+    <a href="{% url 'opportunities:list' %}"{% if nav == 'list' or nav == 'detail' %} aria-current="page"{% endif %}>{% include "partials/icon.html" with name="search" %}<span>Browse</span></a>
+    <a href="{% url 'opportunities:profile' %}"{% if nav == 'profile' or nav == 'matches' %} aria-current="page"{% endif %}>{% include "partials/icon.html" with name="match" %}<span>Matches</span></a>
+    <a href="{% url 'opportunities:saved' %}"{% if nav == 'saved' %} aria-current="page"{% endif %}>{% include "partials/icon.html" with name="bookmark" %}<span>Saved</span></a>
+    <a href="{% url 'opportunities:org_landing' %}"{% if nav|slice:":4" == 'org_' %} aria-current="page"{% endif %}>{% include "partials/icon.html" with name="building" %}<span>Organizations</span></a>
+  </nav>
+  {% endwith %}
 </body>
 </html>

@@ -3,47 +3,68 @@
 {% block title %}Find my matches · OppScout AI{% endblock %}
 
 {% block content %}
-<h1 class="page-title">Find opportunities that fit you</h1>
-<p class="small lead-small">Every field is optional, and anything you leave blank is simply not used. Your profile is saved in this browser only. When you press the button, its details are sent to the server to rank listings, and they are not stored there.</p>
+<div class="page-head">
+  <h1 class="page-title">Find opportunities that fit you</h1>
+  <p class="lead-small">Every field is optional, and anything you leave blank is simply not used. Your profile is saved in this browser only. When you press the button, its details are sent to the server to rank listings, and they are not stored there.</p>
+</div>
 
-<form id="profile-form" class="profile-form" method="post" action="{% url 'opportunities:matches' %}"
-      hx-post="{% url 'opportunities:matches' %}" hx-target="#matches" hx-swap="innerHTML" hx-indicator="#matching-indicator">
-  {% csrf_token %}
+<div class="split with-aside">
+  <form id="profile-form" class="form-card" method="post" action="{% url 'opportunities:matches' %}"
+        hx-post="{% url 'opportunities:matches' %}" hx-target="#matches" hx-swap="innerHTML" hx-indicator="#matching-indicator">
+    {% csrf_token %}
 
-  <div class="grid-2">
-    <label class="field">Country {{ form.country }}</label>
-    <label class="field">Education level {{ form.education_level }}</label>
-    <label class="field">Field of study {{ form.field_of_study }}</label>
-    <label class="field">Current qualification {{ form.current_qualification }}</label>
-  </div>
+    <div class="form-section">
+      <h2>About you</h2>
+      <div class="grid-2">
+        <label class="field">Country {{ form.country }}</label>
+        <label class="field">Education level {{ form.education_level }}</label>
+        <label class="field">Field of study {{ form.field_of_study }}</label>
+        <label class="field">Current qualification {{ form.current_qualification }}</label>
+      </div>
+    </div>
 
-  <label class="field">Skills (separate with commas) {{ form.skills }}</label>
-  <label class="field">Interests (separate with commas) {{ form.interests }}</label>
-  <label class="field">Experience {{ form.experience }}</label>
-  <label class="field">Career goals {{ form.career_goals }}</label>
+    <div class="form-section">
+      <h2>What you bring</h2>
+      <label class="field">Skills (separate with commas) {{ form.skills }}</label>
+      <label class="field">Interests (separate with commas) {{ form.interests }}</label>
+      <label class="field">Experience {{ form.experience }}</label>
+      <label class="field">Career goals {{ form.career_goals }}</label>
+    </div>
 
-  <fieldset class="field">
-    <legend>Opportunity types you want</legend>
-    <p class="small">Leave all unticked to see every type.</p>
-    <div class="checks">{{ form.categories }}</div>
-  </fieldset>
+    <div class="form-section">
+      <h2>What you want</h2>
+      <fieldset class="field">
+        <legend>Opportunity types you want</legend>
+        <p class="help">Leave all unticked to see every type.</p>
+        <div class="checks">{{ form.categories }}</div>
+      </fieldset>
+      <fieldset class="field">
+        <legend>Where</legend>
+        <div class="checks">{{ form.location_preferences }}</div>
+      </fieldset>
+    </div>
 
-  <fieldset class="field">
-    <legend>Where</legend>
-    <div class="checks">{{ form.location_preferences }}</div>
-  </fieldset>
+    <datalist id="country-options">
+      {% for name in country_options %}<option value="{{ name }}">{% endfor %}
+    </datalist>
 
-  <datalist id="country-options">
-    {% for name in country_options %}<option value="{{ name }}">{% endfor %}
-  </datalist>
+    <div class="actions">
+      <button class="btn" type="submit">Find my opportunities</button>
+      <button class="btn btn-ghost" type="button" id="clear-profile">Clear saved profile</button>
+      <span id="matching-indicator" class="htmx-indicator small">Matching&hellip;</span>
+      <span id="profile-status" class="small" role="status"></span>
+    </div>
+  </form>
 
-  <div class="actions">
-    <button class="btn" type="submit">Find my opportunities</button>
-    <button class="btn btn-ghost" type="button" id="clear-profile">Clear saved profile</button>
-    <span id="matching-indicator" class="htmx-indicator small">Matching&hellip;</span>
-    <span id="profile-status" class="small" role="status"></span>
-  </div>
-</form>
+  <aside class="privacy-card">
+    <h2>{% include "partials/icon.html" with name="lock" %} Your details stay yours</h2>
+    <ul>
+      <li>Saved only in this browser.</li>
+      <li>Sent to the server when you ask for matches, then discarded.</li>
+      <li>No account is needed.</li>
+    </ul>
+  </aside>
+</div>
 
-<div id="matches" aria-live="polite"></div>
+<div id="matches" class="matches-intro" aria-live="polite"></div>
 {% endblock %}

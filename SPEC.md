@@ -83,6 +83,7 @@ Shared partials are in `templates/partials/`; page-specific ones sit next to the
 | 5 | Skill-gap analysis, saved opportunities | Built and tested with a fake provider (204 tests, 14-check Chromium run). Gap analysis not yet run against live Gemini. |
 | 7a | Organization portal | Built: 250 tests, 17-check Chromium run. Needs migration 0003. |
 | 6 | Tests, error handling, deployment hardening | Done locally: `check --deploy` clean apart from two deliberate HSTS warnings, gunicorn smoke test with DEBUG off (redirect, static, 404 page, CSRF, headers), 206 tests. **Not deployed yet.** See `DEPLOY.md`. |
+| 7b | UI redesign | Done (v11). All pages restyled, checked in Chromium at 1280 and 390 px, no horizontal overflow. |
 | 7 | Evaluation, README, demo | |
 
 If time runs short, keep in this order: directory, matching, eligibility, deployment, then gap analysis and saves.

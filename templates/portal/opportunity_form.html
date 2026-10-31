@@ -1,17 +1,19 @@
 {% extends "base.html" %}
 {% block title %}{% if editing %}Edit{% else %}Post{% endif %} an opportunity · OppScout AI{% endblock %}
 {% block content %}
-<p class="back"><a href="{% url 'opportunities:org_dashboard' %}">&larr; Dashboard</a></p>
-<h1>{% if editing %}Edit opportunity{% else %}Post an opportunity{% endif %}</h1>
+<div class="page-head">
+  <p class="back"><a href="{% url 'opportunities:org_dashboard' %}">&larr; Dashboard</a></p>
+  <h1>{% if editing %}Edit opportunity{% else %}Post an opportunity{% endif %}</h1>
+  <p>Provide accurate details. Listings are checked before they go live, and applicants rely on what you write here.</p>
+</div>
 {% if reviews_again %}
-  <p class="notice notice-warn">This listing is {{ opp.get_status_display|lower }}. Saving changes sends it back for review, and it will not be visible to the public until an administrator approves it again.</p>
+  <p class="notice notice-warn">{% include "partials/icon.html" with name="alert" %}<span>This listing is {{ opp.get_status_display|lower }}. Saving changes sends it back for review, and it will not be visible to the public until an administrator approves it again.</span></p>
 {% endif %}
-<p class="small">Provide accurate details. Listings are checked before they go live, and applicants rely on what you write here.</p>
 
-<form method="post" id="opp-form" class="stack" novalidate data-extra-map='{{ extra_map_json }}'>
+<form method="post" id="opp-form" class="form-card" style="max-width:44rem" novalidate data-extra-map='{{ extra_map_json }}'>
   {% csrf_token %}
   {% include "portal/partials/form_fields.html" %}
-  <div class="row-actions">
+  <div class="actions">
     <button type="submit" name="action" value="submit" class="btn">Submit for review</button>
     {% if not editing or opp.status == "draft" %}
       <button type="submit" name="action" value="save" class="btn btn-ghost">Save as draft</button>

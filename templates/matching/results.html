@@ -4,7 +4,7 @@
 
 {% block content %}
 <p class="back"><a href="{% url 'opportunities:profile' %}">&larr; Edit my profile</a></p>
-<h1 class="page-title">Your matches</h1>
+<div class="page-head"><h1 class="page-title">Your matches</h1></div>
 <div id="matches">
   {% include "matching/partials/match_list.html" %}
 </div>

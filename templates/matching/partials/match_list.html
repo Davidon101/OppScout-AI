@@ -6,7 +6,7 @@
     </ul>
   </div>
 {% elif result %}
-  <p class="notice notice-info">Scores show how relevant a listing looks for your profile. They are not an eligibility decision. Check the requirements and the official page before you apply.</p>
+  <p class="notice notice-info">{% include "partials/icon.html" with name="help" %}<span>Scores show how relevant a listing looks for your profile. They are not an eligibility decision. Check the requirements and the official page before you apply.</span></p>
 
   {% if not profile.country %}
     <p class="small">Add your country to hide listings that clearly exclude it.</p>
@@ -18,30 +18,33 @@
       {% for m in result.matches %}
         <li class="opp-card match-card">
           <div class="match-head">
-            <div class="badges">
-              <span class="badge">{{ m.opportunity.get_category_display }}</span>
-              <span class="badge badge-soft">{{ m.opportunity.get_work_mode_display }}</span>
+            <div>
+              <span class="kind"><span class="tile">{% include "partials/category_icon.html" with category=m.opportunity.category %}</span>{{ m.opportunity.get_category_display }}</span>
+              <h2><a href="{% url 'opportunities:detail' m.opportunity.slug %}">{{ m.opportunity.title }}</a></h2>
+              <p class="provider">{{ m.opportunity.provider }}</p>
             </div>
-            <span class="score" title="Relevance to your profile, not eligibility">{{ m.score|floatformat:0 }}<small>/100</small></span>
+            {% include "partials/fit_ring.html" with score=m.score %}
           </div>
-          <h2><a href="{% url 'opportunities:detail' m.opportunity.slug %}">{{ m.opportunity.title }}</a></h2>
-          <p class="provider">{{ m.opportunity.provider }}</p>
-          <p class="meta">
-            {{ m.opportunity.country|default:"Online or international" }} &middot;
-            {{ m.opportunity.education_levels_display }} &middot;
-            {{ m.opportunity.deadline_label }}
-          </p>
-
-          <h3 class="mini">Why it matched</h3>
-          <ul class="reasons">
-            {% for reason in m.reasons %}<li>{{ reason }}</li>{% endfor %}
+          <ul class="facts-row">
+            <li>{% include "partials/icon.html" with name="pin" %}{{ m.opportunity.country|default:"Online or international" }}</li>
+            <li>{% include "partials/icon.html" with name="level" %}{{ m.opportunity.education_levels_display }}</li>
+            <li class="deadline deadline-{{ m.opportunity.deadline_tone }}">{% include "partials/icon.html" with name="clock" %}{{ m.opportunity.deadline_label }}</li>
           </ul>
 
-          {% if m.attention %}
-            <h3 class="mini">Check before applying</h3>
-            <ul class="attention">
-              {% for note in m.attention %}<li>{{ note }}</li>{% endfor %}
+          <div>
+            <h3 class="mini">Why it matched</h3>
+            <ul class="reasons">
+              {% for reason in m.reasons %}<li>{% include "partials/icon.html" with name="tick" %}<span>{{ reason }}</span></li>{% endfor %}
             </ul>
+          </div>
+
+          {% if m.attention %}
+            <div>
+              <h3 class="mini">Check before applying</h3>
+              <ul class="attention">
+                {% for note in m.attention %}<li>{% include "partials/icon.html" with name="alert" %}<span>{{ note }}</span></li>{% endfor %}
+              </ul>
+            </div>
           {% endif %}
 
           {% if m.mandatory_count %}

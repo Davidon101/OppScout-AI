@@ -1,12 +1,15 @@
 {% if message %}
-  <p class="notice notice-warn" role="status">{{ message }}</p>
+  <p class="notice notice-warn" role="status">{% include "partials/icon.html" with name="alert" %}<span>{{ message }}</span></p>
 {% endif %}
 
 {% if checks %}
   <h3 class="mini">Checked by rules</h3>
-  <ul class="checks">
+  <ul class="checks-list">
     {% for c in checks %}
-      <li class="check check-{{ c.status }}"><strong>{{ c.label }}:</strong> {{ c.note }}</li>
+      <li class="check check-{{ c.status }}">
+        {% if c.status == "met" %}{% include "partials/icon.html" with name="check" %}{% elif c.status == "not_met" %}{% include "partials/icon.html" with name="x" %}{% else %}{% include "partials/icon.html" with name="help" %}{% endif %}
+        <span><strong>{{ c.label }}:</strong> {{ c.note }}</span>
+      </li>
     {% endfor %}
   </ul>
 {% endif %}
@@ -19,10 +22,10 @@
       <ol class="gaps">
         {% for g in report.gaps %}
           <li class="gap">
-            <span class="tag">{{ g.priority_label }}</span>
+            <span><span class="tag {% if g.priority_label == 'High' %}tag-warn{% endif %}">{{ g.priority_label }}</span></span>
             <strong>{{ g.text }}</strong>
             <span class="small">{{ g.gap }}</span>
-            <span class="action">Next step: {{ g.action }}</span>
+            <span class="action">{% include "partials/icon.html" with name="route" %}<span>Next step: {{ g.action }}</span></span>
           </li>
         {% endfor %}
       </ol>

@@ -1,17 +1,19 @@
 {% extends "base.html" %}
 {% block title %}{% if editing %}Organization details{% else %}Register your organization{% endif %} · OppScout AI{% endblock %}
 {% block content %}
-<h1>{% if editing %}Organization details{% else %}Register your organization{% endif %}</h1>
-{% if editing %}
-  <p class="back"><a href="{% url 'opportunities:org_dashboard' %}">&larr; Dashboard</a></p>
-  {% if saved %}<p class="notice notice-info" role="status">Saved.</p>{% endif %}
-  <p class="small">If you change the name, website or email, the organization is marked as not yet verified until an administrator checks it again.</p>
-{% else %}
-  <p class="small">You will receive a management key on the next page. There is no email confirmation, so enter an address you control.</p>
-{% endif %}
-<form method="post" class="stack" novalidate>
+<div class="page-head">
+  {% if editing %}<p class="back"><a href="{% url 'opportunities:org_dashboard' %}">&larr; Dashboard</a></p>{% endif %}
+  <h1>{% if editing %}Organization details{% else %}Register your organization{% endif %}</h1>
+  {% if editing %}
+    {% if saved %}<p class="notice notice-ok" role="status">{% include "partials/icon.html" with name="check" %}<span>Saved.</span></p>{% endif %}
+    <p>If you change the name, website or email, the organization is marked as not yet verified until an administrator checks it again.</p>
+  {% else %}
+    <p>You will receive a management key on the next page. There is no email confirmation, so enter an address you control.</p>
+  {% endif %}
+</div>
+<form method="post" class="form-card" style="max-width:40rem" novalidate>
   {% csrf_token %}
   {% include "portal/partials/form_fields.html" %}
-  <button type="submit" class="btn">{% if editing %}Save details{% else %}Register and get my key{% endif %}</button>
+  <div class="actions"><button type="submit" class="btn">{% if editing %}Save details{% else %}Register and get my key{% endif %}</button></div>
 </form>
 {% endblock %}

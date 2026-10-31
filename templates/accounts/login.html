@@ -5,9 +5,9 @@
 {% block content %}
 <section class="auth">
   <h1>Log in</h1>
-  <p class="notice notice-warn"><strong>Demo screen.</strong> Accounts are not enabled in this version. Nothing here is sent or stored, and there is no password to create. Continue as a guest to use every feature.</p>
+  <p class="notice notice-warn">{% include "partials/icon.html" with name="alert" %}<span><strong>Demo screen.</strong> Accounts are not enabled in this version. Nothing here is sent or stored, and there is no password to create. Continue as a guest to use every feature.</span></p>
 
-  <div class="auth-form" aria-disabled="true">
+  <div class="auth-card auth-form" aria-disabled="true">
     <label class="field">Email <input type="email" disabled placeholder="you@example.com"></label>
     <label class="field">Password <input type="password" disabled placeholder="Not used in the demo"></label>
     <button class="btn btn-disabled" type="button" disabled>Log in</button>

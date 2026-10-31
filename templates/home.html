@@ -2,55 +2,87 @@
 
 {% block content %}
 <section class="hero">
-  <h1>Find What Fits. Become What&rsquo;s Next.</h1>
-  <p class="lead">OppScout AI helps students, graduates and young professionals discover scholarships, internships, fellowships, grants, jobs and training, and see where they stand against the requirements.</p>
+  <div>
+    <h1>Find What Fits. Become What&rsquo;s Next.</h1>
+    <p class="lead">Scholarships, internships, fellowships, grants, jobs and training for students, graduates and young professionals. See what fits you, and where you stand against each requirement.</p>
 
-  <form class="hero-search" method="get" action="{% url 'opportunities:list' %}" role="search">
-    <label class="visually-hidden" for="hero-q">Search opportunities</label>
-    <input id="hero-q" type="search" name="q" placeholder="Search scholarships, internships, fellowships&hellip;">
-    <button class="btn" type="submit">Search</button>
-  </form>
+    <form class="hero-search" method="get" action="{% url 'opportunities:list' %}" role="search">
+      <label class="visually-hidden" for="hero-q">Search opportunities</label>
+      <input id="hero-q" type="search" name="q" placeholder="Search scholarships, internships, fellowships&hellip;">
+      <button class="btn" type="submit">Search</button>
+    </form>
 
-  <p class="chips">
-    {% for value, label in categories %}
-      <a class="chip" href="{% url 'opportunities:list' %}?category={{ value }}">{{ label }}</a>
-    {% endfor %}
-  </p>
+    <p class="chips">
+      {% for value, label in categories %}
+        <a class="chip" href="{% url 'opportunities:list' %}?category={{ value }}">{% include "partials/category_icon.html" with category=value %}{{ label }}</a>
+      {% endfor %}
+    </p>
 
-  <p><a class="btn" href="{% url 'opportunities:profile' %}">Find my matches</a></p>
+    <div class="hero-cta">
+      <a class="btn" href="{% url 'opportunities:profile' %}">Find my matches</a>
+      <a class="btn btn-ghost" href="{% url 'opportunities:list' %}">Browse all opportunities</a>
+    </div>
+  </div>
+
+  {% if sample_matches %}
+  <aside class="sample ring-animate" aria-label="Example matches">
+    <div class="sample-head">
+      <h2>What a match looks like</h2>
+      <p>Sample profile: Nigerian computer science undergraduate who knows Python and HTML.</p>
+    </div>
+    <ol class="sample-list">
+      {% for m in sample_matches %}
+        <li class="sample-item">
+          {% include "partials/fit_ring.html" with score=m.score %}
+          <div>
+            <h3><a href="{% url 'opportunities:detail' m.opportunity.slug %}">{{ m.opportunity.title }}</a></h3>
+            <p>{{ m.opportunity.provider }}</p>
+          </div>
+        </li>
+      {% endfor %}
+    </ol>
+    <p class="sample-note">The score shows how relevant a listing looks for a profile. It is not an eligibility decision. Your own matches are ranked the same way, from the profile you enter.</p>
+  </aside>
+  {% endif %}
 </section>
 
 {% if featured %}
-<section>
-  <h2 class="section-title">Closing soonest</h2>
-  <ul class="opp-list">
+<section class="section">
+  <div class="section-head">
+    <h2>Closing soonest</h2>
+    <a href="{% url 'opportunities:list' %}">See all opportunities</a>
+  </div>
+  <ul class="opp-list cols-3 cols">
     {% for opp in featured %}
       {% include "partials/opportunity_card.html" %}
     {% endfor %}
   </ul>
-  <p><a href="{% url 'opportunities:list' %}">See all opportunities &rarr;</a></p>
 </section>
 {% endif %}
 
-<section class="notice notice-info">
-  <strong>Offering an opportunity?</strong> Employers, universities and scholarship providers can post and manage listings here. <a href="{% url 'opportunities:org_landing' %}">Post an opportunity</a>.
+<section class="section">
+  <h2>How it works</h2>
+  <ol class="steps">
+    <li>
+      <h3>Tell us about you</h3>
+      <p>Add your country, education, skills and interests. Every field is optional, and your profile stays in your browser.</p>
+    </li>
+    <li>
+      <h3>See what fits</h3>
+      <p>Listings are filtered by who can apply, then ranked by how well they match, with the reasons shown.</p>
+    </li>
+    <li>
+      <h3>Check where you stand</h3>
+      <p>On any listing, compare your details with its requirements and get one realistic next step for each gap.</p>
+    </li>
+  </ol>
 </section>
 
-<section>
-  <h2 class="section-title">How it works</h2>
-  <div class="cards">
-    <article class="card">
-      <h3>1. Tell us about you</h3>
-      <p>Add your country, education, skills and interests. Every field is optional, and your profile stays in your browser.</p>
-    </article>
-    <article class="card">
-      <h3>2. See what fits</h3>
-      <p>Listings are filtered by who can apply, then ranked by how well they match, with the reasons shown. A score is relevance, not an eligibility decision.</p>
-    </article>
-    <article class="card">
-      <h3>3. Check the requirements</h3>
-      <p>Each listing shows its published requirements and a link to the official page. AI eligibility and skill-gap checks are coming next.</p>
-    </article>
+<section class="section band">
+  <div>
+    <h2>Offering an opportunity?</h2>
+    <p>Employers, universities and scholarship providers can post and manage listings here. Every listing is reviewed before it goes live.</p>
   </div>
+  <a class="btn btn-light" href="{% url 'opportunities:org_landing' %}">Post an opportunity</a>
 </section>
 {% endblock %}

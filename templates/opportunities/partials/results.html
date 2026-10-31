@@ -1,7 +1,7 @@
 {% if page.paginator.count %}
   <p class="count">{{ page.paginator.count }} opportunit{{ page.paginator.count|pluralize:"y,ies" }}</p>
 
-  <ul class="opp-list">
+  <ul class="opp-list cols">
     {% for opp in page %}
       {% include "partials/opportunity_card.html" %}
     {% endfor %}
@@ -21,6 +21,6 @@
 {% else %}
   <div class="empty">
     <p>No opportunities match these filters.</p>
-    <p class="small">Try removing a filter, or include closed listings.</p>
+    <p class="small">Remove a filter, or include closed listings.</p>
   </div>
 {% endif %}

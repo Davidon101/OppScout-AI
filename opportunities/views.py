@@ -30,10 +30,23 @@ def home(request):
         .open()
         .order_by(F("deadline").asc(nulls_last=True), "title")[:3]
     )
+    sample = Profile.from_mapping({
+        "country": "Nigeria",
+        "education_level": "undergraduate",
+        "field_of_study": "Computer Science",
+        "skills": "Python, HTML",
+        "interests": "software development, AI engineering",
+    })
+    open_listings = list(Opportunity.objects.published().open().prefetch_related("requirements"))
+    sample_matches = rank_opportunities(sample, open_listings, today=timezone.localdate()).matches[:3]
     return render(
         request,
         "home.html",
-        {"featured": featured, "categories": Opportunity.Category.choices},
+        {
+            "featured": featured,
+            "categories": Opportunity.Category.choices,
+            "sample_matches": sample_matches,
+        },
     )
 
 

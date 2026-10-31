@@ -1,0 +1,4 @@
+<span class="ring" style="--score:{{ score|floatformat:0 }}" role="img" aria-label="Relevance score {{ score|floatformat:0 }} out of 100" title="Relevance to your profile, not eligibility">
+  <svg viewBox="0 0 64 64" aria-hidden="true"><circle class="ring-track" cx="32" cy="32" r="26"/><circle class="ring-value" cx="32" cy="32" r="26"/></svg>
+  <span class="ring-num">{{ score|floatformat:0 }}<small>/100</small></span>
+</span>

@@ -6,119 +6,136 @@
 {% block content %}
 <p class="back"><a href="{% url 'opportunities:list' %}">&larr; All opportunities</a></p>
 
-<article class="detail">
-  <header>
-    <div class="badges">
-      <span class="badge">{{ opp.get_category_display }}</span>
-      <span class="badge badge-soft">{{ opp.get_work_mode_display }}</span>
+<article>
+  <header class="detail-head">
+    <span class="tile tile-lg">{% include "partials/category_icon.html" with category=opp.category %}</span>
+    <div>
+      <p class="kind">{{ opp.get_category_display }} <span class="tag">{{ opp.get_work_mode_display }}</span></p>
+      <h1>{{ opp.title }}</h1>
+      <p class="provider">{{ opp.provider }}</p>
+      <div class="detail-actions">
+        {% if opp.status != "filled" and opp.status != "closed" %}
+          <a class="btn" href="{{ opp.official_url }}" target="_blank" rel="noopener noreferrer nofollow">Go to the official page {% include "partials/icon.html" with name="external" %}</a>
+        {% endif %}
+        <button type="button" class="btn btn-ghost btn-save" data-save="{{ opp.slug }}" aria-pressed="false" hidden>{% include "partials/icon.html" with name="bookmark" %}<span>Save</span></button>
+      </div>
     </div>
-    <h1>{{ opp.title }}</h1>
-    <p class="provider">{{ opp.provider }}</p>
-    <button type="button" class="btn btn-ghost btn-save" data-save="{{ opp.slug }}" aria-pressed="false" hidden>Save</button>
   </header>
 
   {% if opp.closed_notice %}
-    <p class="notice notice-warn">{{ opp.closed_notice }}</p>
+    <p class="notice notice-warn">{% include "partials/icon.html" with name="alert" %}<span>{{ opp.closed_notice }}</span></p>
   {% endif %}
 
-  <p class="small posted-by">
+  <p class="posted-by">
     {% if opp.organization %}
-      Posted by {{ opp.organization.name }}{% if opp.organization.verified %} (verified organization){% else %} (organization not independently verified){% endif %}. Details are written by the organization.
+      {% include "partials/icon.html" with name="building" %}
+      <span>Posted by {{ opp.organization.name }}{% if opp.organization.verified %} (verified organization){% else %} (organization not independently verified){% endif %}. Details are written by the organization.</span>
     {% else %}
-      Researched by OppScout from the official page.
+      {% include "partials/icon.html" with name="shield" %}
+      <span>Researched by OppScout from the official page.</span>
     {% endif %}
   </p>
 
-  <dl class="facts">
-    <div>
-      <dt>Deadline</dt>
-      <dd>
-        {% if opp.deadline %}{{ opp.deadline|date:"j F Y" }} ({{ opp.deadline_label }}){% else %}{{ opp.deadline_label }}{% endif %}
-      </dd>
+  <div class="split with-aside" style="margin-top:1.5rem">
+    <div class="stack">
+      <section class="panel">
+        <h2>About</h2>
+        <div class="prose">{{ opp.description|linebreaks }}</div>
+        {% if opp.benefits %}
+          <h3 style="margin-top:1.25rem">Benefits</h3>
+          <div class="prose">{{ opp.benefits|linebreaks }}</div>
+        {% endif %}
+      </section>
+
+      {% if opp.detail_items %}
+        <section class="panel">
+          <h2>More details</h2>
+          <dl class="facts inline">
+            {% for label, value in opp.detail_items %}<div><dt>{{ label }}</dt><dd>{{ value }}</dd></div>{% endfor %}
+          </dl>
+        </section>
+      {% endif %}
+
+      <section class="panel">
+        <h2>Requirements</h2>
+        {% if has_requirements %}
+          {% if mandatory %}
+            <div class="req-group">
+              <h3>Mandatory</h3>
+              <ul class="req-list">{% for r in mandatory %}<li>{% include "partials/icon.html" with name="tick" %}<span>{{ r.text }}</span></li>{% endfor %}</ul>
+            </div>
+          {% endif %}
+          {% if preferred %}
+            <div class="req-group">
+              <h3>Preferred</h3>
+              <ul class="req-list preferred">{% for r in preferred %}<li>{% include "partials/icon.html" with name="plus" %}<span>{{ r.text }}</span></li>{% endfor %}</ul>
+            </div>
+          {% endif %}
+          {% if unclear %}
+            <div class="req-group">
+              <h3>Stated, status unclear</h3>
+              <ul class="req-list preferred">{% for r in unclear %}<li>{% include "partials/icon.html" with name="help" %}<span>{{ r.text }}</span></li>{% endfor %}</ul>
+            </div>
+          {% endif %}
+        {% else %}
+          <p>No requirements have been recorded for this listing yet. See the official page.</p>
+        {% endif %}
+      </section>
+
+      {% if opp.how_to_apply %}
+        <section class="panel"><h2>How to apply</h2><div class="prose">{{ opp.how_to_apply|linebreaks }}</div></section>
+      {% endif %}
     </div>
-    <div><dt>Hosted in</dt><dd>{{ opp.country|default:"Not tied to one country" }}</dd></div>
-    <div><dt>Who can apply</dt><dd>{{ opp.eligibility_summary }}</dd></div>
-    <div><dt>Education level</dt><dd>{{ opp.education_levels_display }}</dd></div>
-    <div>
-      <dt>Last verified</dt>
-      <dd>{% if opp.last_verified %}{{ opp.last_verified|date:"j F Y" }}{% else %}Not yet verified{% endif %}</dd>
-    </div>
-  </dl>
 
-  <section>
-    <h2>About</h2>
-    {{ opp.description|linebreaks }}
-  </section>
+    <aside class="stack">
+      <section class="panel panel-lift">
+        <h2>At a glance</h2>
+        <dl class="facts">
+          <div>
+            <dt>Deadline</dt>
+            <dd>
+              {% if opp.deadline %}{{ opp.deadline|date:"j F Y" }}{% endif %}
+              <span class="deadline deadline-{{ opp.deadline_tone }}">{% include "partials/icon.html" with name="clock" %}{{ opp.deadline_label }}</span>
+            </dd>
+          </div>
+          <div><dt>Hosted in</dt><dd>{{ opp.country|default:"Not tied to one country" }}</dd></div>
+          <div><dt>Who can apply</dt><dd>{{ opp.eligibility_summary }}</dd></div>
+          <div><dt>Education level</dt><dd>{{ opp.education_levels_display }}</dd></div>
+          <div>
+            <dt>Last verified</dt>
+            <dd>{% if opp.last_verified %}{{ opp.last_verified|date:"j F Y" }}{% else %}Not yet verified{% endif %}</dd>
+          </div>
+          {% if opp.contact_info %}<div><dt>Contact</dt><dd>{{ opp.contact_info }}</dd></div>{% endif %}
+        </dl>
+      </section>
 
-  {% if opp.detail_items %}
-    <section>
-      <h2>More details</h2>
-      <dl class="facts">
-        {% for label, value in opp.detail_items %}<div><dt>{{ label }}</dt><dd>{{ value }}</dd></div>{% endfor %}
-      </dl>
-    </section>
-  {% endif %}
+      {% if ai_available %}
+      <section class="panel ai-panel">
+        <h2>{% include "partials/icon.html" with name="spark" %} Check my eligibility</h2>
+        <p class="small">Compares the details in your saved profile with the requirements. Your country, education, field, skills and experience are sent to an AI service to do this. Nothing is stored.</p>
+        <form id="eligibility-form" method="post" action="{% url 'opportunities:check' opp.slug %}"
+              hx-post="{% url 'opportunities:check' opp.slug %}" hx-target="#eligibility-result" hx-indicator="#eligibility-form">
+          {% csrf_token %}
+          <button type="submit" class="btn">Check my eligibility</button>
+          <a class="small" href="{% url 'opportunities:profile' %}">Edit my profile</a>
+        </form>
+        <div id="eligibility-result" aria-live="polite"></div>
+      </section>
 
-  {% if opp.benefits %}
-    <section>
-      <h2>Benefits</h2>
-      {{ opp.benefits|linebreaks }}
-    </section>
-  {% endif %}
-
-  <section>
-    <h2>Requirements</h2>
-    {% if has_requirements %}
-      {% if mandatory %}
-        <h3>Mandatory</h3>
-        <ul class="req-list">{% for r in mandatory %}<li>{{ r.text }}</li>{% endfor %}</ul>
+      <section class="panel ai-panel">
+        <h2>{% include "partials/icon.html" with name="route" %} What am I missing?</h2>
+        <p class="small">Lists the requirements you do not yet clearly meet and one realistic next step for each. The same details are sent to an AI service. Nothing is stored.</p>
+        <form id="gap-form" method="post" action="{% url 'opportunities:gaps' opp.slug %}"
+              hx-post="{% url 'opportunities:gaps' opp.slug %}" hx-target="#gap-result" hx-indicator="#gap-form">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-ghost">Show what to work on</button>
+        </form>
+        <div id="gap-result" aria-live="polite"></div>
+      </section>
       {% endif %}
-      {% if preferred %}
-        <h3>Preferred</h3>
-        <ul class="req-list">{% for r in preferred %}<li>{{ r.text }}</li>{% endfor %}</ul>
-      {% endif %}
-      {% if unclear %}
-        <h3>Stated, status unclear</h3>
-        <ul class="req-list">{% for r in unclear %}<li>{{ r.text }}</li>{% endfor %}</ul>
-      {% endif %}
-    {% else %}
-      <p>No requirements have been recorded for this listing yet. See the official page.</p>
-    {% endif %}
-  </section>
+    </aside>
+  </div>
 
-  {% if ai_available %}
-  <section class="eligibility">
-    <h2>Check my eligibility</h2>
-    <p class="small">Compares the details in your saved profile with the requirements above. Your country, education, field, skills and experience are sent to an AI service to do this. Nothing is stored.</p>
-    <form id="eligibility-form" method="post" action="{% url 'opportunities:check' opp.slug %}"
-          hx-post="{% url 'opportunities:check' opp.slug %}" hx-target="#eligibility-result" hx-indicator="#eligibility-form">
-      {% csrf_token %}
-      <button type="submit" class="btn">Check my eligibility</button>
-      <a class="small" href="{% url 'opportunities:profile' %}">Edit my profile</a>
-    </form>
-    <div id="eligibility-result" aria-live="polite"></div>
-  </section>
-
-  <section class="eligibility">
-    <h2>What am I missing?</h2>
-    <p class="small">Lists the requirements you do not yet clearly meet and one realistic next step for each. The same details are sent to an AI service. Nothing is stored.</p>
-    <form id="gap-form" method="post" action="{% url 'opportunities:gaps' opp.slug %}"
-          hx-post="{% url 'opportunities:gaps' opp.slug %}" hx-target="#gap-result" hx-indicator="#gap-form">
-      {% csrf_token %}
-      <button type="submit" class="btn">Show what to work on</button>
-    </form>
-    <div id="gap-result" aria-live="polite"></div>
-  </section>
-  {% endif %}
-
-  {% if opp.how_to_apply %}
-    <section><h2>How to apply</h2>{{ opp.how_to_apply|linebreaks }}</section>
-  {% endif %}
-  {% if opp.contact_info %}<p class="small">Contact: {{ opp.contact_info }}</p>{% endif %}
-
-  {% if opp.status != "filled" and opp.status != "closed" %}
-    <p><a class="btn" href="{{ opp.official_url }}" target="_blank" rel="noopener noreferrer nofollow">Go to the official page</a></p>
-  {% endif %}
-  <p class="small">Details can change. Confirm everything with the provider before you apply.</p>
+  <p class="small" style="margin-top:1.5rem">Details can change. Confirm everything with the provider before you apply.</p>
 </article>
 {% endblock %}

@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% block title %}Not available · OppScout AI{% endblock %}
 {% block content %}
-<h1>That action is not available</h1>
-<p>{{ opp.title }} is currently <strong>{{ opp.get_status_display|lower }}</strong>, so {% if action_refused %}that change cannot be made{% else %}it can no longer be edited{% endif %}. Post a new listing if you need to start again.</p>
-<p><a class="btn" href="{% url 'opportunities:org_dashboard' %}">Back to dashboard</a></p>
+<section class="auth">
+  <h1>That action is not available</h1>
+  <p>{{ opp.title }} is currently <strong>{{ opp.get_status_display|lower }}</strong>, so {% if action_refused %}that change cannot be made{% else %}it can no longer be edited{% endif %}. Post a new listing if you need to start again.</p>
+  <p><a class="btn" href="{% url 'opportunities:org_dashboard' %}">Back to dashboard</a></p>
+</section>
 {% endblock %}

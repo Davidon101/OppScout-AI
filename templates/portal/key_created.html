@@ -1,14 +1,19 @@
 {% extends "base.html" %}
 {% block title %}Your management key · OppScout AI{% endblock %}
 {% block content %}
-<h1>{{ org.name }} is registered</h1>
-<div class="notice notice-warn" role="alert">
-  <strong>Save this key now. It is shown only once.</strong>
-  <p>It is the only way back into your dashboard. We store only a scrambled copy, so we cannot show it again. Anyone who has it can manage your listings.</p>
-  <p class="keybox"><code id="mgmt-key">{{ key }}</code></p>
-  <p class="small">Copy it into a password manager or a private note.</p>
-</div>
-<p>You are signed in on this browser for 8 hours. Your organization is <strong>not yet verified</strong>: an administrator checks new organizations.</p>
-<p><a class="btn" href="{% url 'opportunities:org_new' %}">Post my first opportunity</a>
-   <a class="btn btn-ghost" href="{% url 'opportunities:org_dashboard' %}">Go to dashboard</a></p>
+<section class="auth" style="max-width:38rem">
+  <h1>{{ org.name }} is registered</h1>
+  <div class="notice notice-warn" role="alert">
+    {% include "partials/icon.html" with name="alert" %}
+    <div>
+      <strong>Save this key now. It is shown only once.</strong>
+      <p>It is the only way back into your dashboard. We store only a scrambled copy, so we cannot show it again. Anyone who has it can manage your listings.</p>
+      <p class="keybox"><code id="mgmt-key">{{ key }}</code></p>
+      <p class="small">Copy it into a password manager or a private note.</p>
+    </div>
+  </div>
+  <p>You are signed in on this browser for 8 hours. Your organization is <strong>not yet verified</strong>: an administrator checks new organizations.</p>
+  <p class="actions"><a class="btn" href="{% url 'opportunities:org_new' %}">Post my first opportunity</a>
+     <a class="btn btn-ghost" href="{% url 'opportunities:org_dashboard' %}">Go to dashboard</a></p>
+</section>
 {% endblock %}

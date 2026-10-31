@@ -3,60 +3,69 @@
 {% block title %}Opportunities · OppScout AI{% endblock %}
 
 {% block content %}
-<h1 class="page-title">Opportunities</h1>
+<div class="page-head">
+  <h1>Opportunities</h1>
+  <p>Browse listings, narrow them down, and save the ones you want to come back to.</p>
+</div>
 
-<form class="filters" id="filters" method="get" action="{% url 'opportunities:list' %}"
-      hx-get="{% url 'opportunities:list' %}" hx-target="#results" hx-push-url="true"
-      hx-trigger="change, submit, keyup changed delay:400ms from:#q">
-  <label class="field field-wide">Search
-    <input type="search" id="q" name="q" value="{{ filters.q }}" placeholder="Title, provider or keyword">
-  </label>
+<div class="split with-filters">
+  <form id="filters" method="get" action="{% url 'opportunities:list' %}"
+        hx-get="{% url 'opportunities:list' %}" hx-target="#results" hx-push-url="true"
+        hx-trigger="change, submit, keyup changed delay:400ms from:#q">
+    <details class="filters-panel" open>
+      <summary>{% include "partials/icon.html" with name="filter" %}Filters</summary>
+      <div class="filters-body">
+        <div class="field">
+          <label for="q">Search</label>
+          <input type="search" id="q" name="q" value="{{ filters.q }}" placeholder="Title, provider or keyword">
+        </div>
+        <div class="field">
+          <label for="f-category">Type</label>
+          <select id="f-category" name="category">
+            <option value="">All types</option>
+            {% for value, label in categories %}
+              <option value="{{ value }}"{% if filters.category == value %} selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-country">Country</label>
+          <select id="f-country" name="country">
+            <option value="">Any country</option>
+            {% for c in countries %}
+              <option value="{{ c }}"{% if filters.country == c %} selected{% endif %}>{{ c }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-level">Education level</label>
+          <select id="f-level" name="education_level">
+            <option value="">Any level</option>
+            {% for value, label in levels %}
+              <option value="{{ value }}"{% if filters.education_level == value %} selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-mode">Format</label>
+          <select id="f-mode" name="work_mode">
+            <option value="">Any format</option>
+            {% for value, label in modes %}
+              <option value="{{ value }}"{% if filters.work_mode == value %} selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <label class="check-pill">
+          <input type="checkbox" name="include_closed" value="1"{% if filters.include_closed %} checked{% endif %}>
+          Include closed
+        </label>
+        <noscript><p><button class="btn" type="submit">Apply filters</button></p></noscript>
+      </div>
+    </details>
+  </form>
 
-  <label class="field">Type
-    <select name="category">
-      <option value="">All types</option>
-      {% for value, label in categories %}
-        <option value="{{ value }}"{% if filters.category == value %} selected{% endif %}>{{ label }}</option>
-      {% endfor %}
-    </select>
-  </label>
-
-  <label class="field">Country
-    <select name="country">
-      <option value="">Any country</option>
-      {% for c in countries %}
-        <option value="{{ c }}"{% if filters.country == c %} selected{% endif %}>{{ c }}</option>
-      {% endfor %}
-    </select>
-  </label>
-
-  <label class="field">Education level
-    <select name="education_level">
-      <option value="">Any level</option>
-      {% for value, label in levels %}
-        <option value="{{ value }}"{% if filters.education_level == value %} selected{% endif %}>{{ label }}</option>
-      {% endfor %}
-    </select>
-  </label>
-
-  <label class="field">Format
-    <select name="work_mode">
-      <option value="">Any format</option>
-      {% for value, label in modes %}
-        <option value="{{ value }}"{% if filters.work_mode == value %} selected{% endif %}>{{ label }}</option>
-      {% endfor %}
-    </select>
-  </label>
-
-  <label class="check">
-    <input type="checkbox" name="include_closed" value="1"{% if filters.include_closed %} checked{% endif %}>
-    Include closed
-  </label>
-
-  <noscript><button class="btn" type="submit">Apply filters</button></noscript>
-</form>
-
-<div id="results" aria-live="polite">
-  {% include "opportunities/partials/results.html" %}
+  <div id="results" aria-live="polite">
+    {% include "opportunities/partials/results.html" %}
+  </div>
 </div>
 {% endblock %}

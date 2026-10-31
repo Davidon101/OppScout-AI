@@ -1,6 +1,6 @@
 {% if opportunities %}
   <p class="count">{{ opportunities|length }} saved</p>
-  <ul class="opp-list">
+  <ul class="opp-list cols">
     {% for opp in opportunities %}{% include "partials/opportunity_card.html" %}{% endfor %}
   </ul>
 {% else %}

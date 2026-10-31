@@ -1,14 +1,18 @@
 <li class="opp-card">
-  <div class="badges">
-    <span class="badge">{{ opp.get_category_display }}</span>
-    <span class="badge badge-soft">{{ opp.get_work_mode_display }}</span>
+  <div class="opp-top">
+    <span class="kind"><span class="tile">{% include "partials/category_icon.html" with category=opp.category %}</span>{{ opp.get_category_display }}</span>
+    <span class="deadline deadline-{{ opp.deadline_tone }}">{% include "partials/icon.html" with name="clock" %}{{ opp.deadline_label }}</span>
   </div>
-  <h2><a href="{% url 'opportunities:detail' opp.slug %}">{{ opp.title }}</a></h2>
-  <p class="provider">{{ opp.provider }}</p>
-  <p class="meta">
-    {{ opp.country|default:"Online or international" }} &middot;
-    {{ opp.education_levels_display }} &middot;
-    <span{% if opp.is_expired %} class="closed"{% endif %}>{{ opp.deadline_label }}</span>
-  </p>
-  <button type="button" class="btn btn-ghost btn-save" data-save="{{ opp.slug }}" aria-pressed="false" hidden>Save</button>
+  <div>
+    <h2><a href="{% url 'opportunities:detail' opp.slug %}">{{ opp.title }}</a></h2>
+    <p class="provider">{{ opp.provider }}{% if opp.organization and opp.organization.verified %} <span class="verified">{% include "partials/icon.html" with name="shield" %}Verified</span>{% endif %}</p>
+  </div>
+  <ul class="facts-row">
+    <li>{% include "partials/icon.html" with name="pin" %}{{ opp.country|default:"Online or international" }}</li>
+    <li>{% include "partials/icon.html" with name="level" %}{{ opp.education_levels_display }}</li>
+    <li>{% include "partials/icon.html" with name="globe" %}{{ opp.get_work_mode_display }}</li>
+  </ul>
+  <div class="opp-foot">
+    <button type="button" class="btn btn-ghost btn-sm btn-save" data-save="{{ opp.slug }}" aria-pressed="false" hidden>{% include "partials/icon.html" with name="bookmark" %}<span>Save</span></button>
+  </div>
 </li>

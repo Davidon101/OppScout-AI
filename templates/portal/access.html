@@ -1,16 +1,18 @@
 {% extends "base.html" %}
 {% block title %}Organization access · OppScout AI{% endblock %}
 {% block content %}
-<h1>Open your organization dashboard</h1>
-<p class="small">Paste the management key you received when you registered. This is not a password login, and keys cannot be recovered. If you lost yours, contact the OppScout administrator.</p>
-{% if error %}<p class="notice notice-warn" role="alert">{{ error }}</p>{% endif %}
-<form method="post" class="stack">
-  {% csrf_token %}
-  <div class="field">
-    <label for="key">Management key</label>
-    <input id="key" name="key" type="password" autocomplete="off" required maxlength="100">
-  </div>
-  <button type="submit" class="btn">Open dashboard</button>
-</form>
-<p class="small">New here? <a href="{% url 'opportunities:org_register' %}">Register your organization</a>.</p>
+<section class="auth">
+  <h1>Open your organization dashboard</h1>
+  <p class="small">Paste the management key you received when you registered. This is not a password login, and keys cannot be recovered. If you lost yours, contact the OppScout administrator.</p>
+  {% if error %}<p class="notice notice-warn" role="alert">{% include "partials/icon.html" with name="alert" %}<span>{{ error }}</span></p>{% endif %}
+  <form method="post" class="auth-card">
+    {% csrf_token %}
+    <div class="field">
+      <label for="key">Management key</label>
+      <input id="key" name="key" type="password" autocomplete="off" required maxlength="100">
+    </div>
+    <button type="submit" class="btn">Open dashboard</button>
+  </form>
+  <p class="small">New here? <a href="{% url 'opportunities:org_register' %}">Register your organization</a>.</p>
+</section>
 {% endblock %}

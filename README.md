@@ -51,3 +51,4 @@ Evaluate matching quality against the labelled profiles: `python manage.py evalu
 - Day 5: "What am I missing?" gap analysis on each listing (same caps and privacy as the eligibility check), and Save buttons with a Saved page (slugs kept in this browser only).
 - Day 6: production settings (HTTPS redirect, HSTS, logging), 404/500 pages, `render.yaml` with seed load and superuser creation. Follow `DEPLOY.md`.
 - Day 7a: organization portal at `/for-organizations/` (key-based, no logins; listings are approved by an admin). Run `python manage.py migrate` for migration 0003.
+- Redesign (v11): new visual system (see `DESIGN.md`): self-hosted Bricolage Grotesque and Public Sans, fit rings, icon sprite, mobile tab bar, every page restyled. No behaviour changes; 250 tests pass.

@@ -266,6 +266,20 @@ class Opportunity(models.Model):
         return self.deadline is not None and self.deadline < timezone.localdate()
 
     @property
+    def deadline_tone(self):
+        """closed, urgent (a week or less), soon (a month or less), open or none."""
+        if self.is_expired:
+            return "closed"
+        if self.deadline is None:
+            return "none"
+        days = self.days_left
+        if days <= 7:
+            return "urgent"
+        if days <= 30:
+            return "soon"
+        return "open"
+
+    @property
     def deadline_label(self):
         if self.status == self.Status.FILLED:
             return "Filled"

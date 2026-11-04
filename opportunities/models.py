@@ -164,6 +164,14 @@ class Opportunity(models.Model):
     contact_info = models.CharField(max_length=200, blank=True)
     details = models.JSONField(default=dict, blank=True, editable=False)
     last_verified = models.DateField(null=True, blank=True)
+    # Set when the listing came from the scouting job and has not been rewritten by hand.
+    scouted = models.BooleanField(default=False, help_text="Found by the scouting job. Review before publishing.")
+    scout_source = models.ForeignKey(
+        "Source", null=True, blank=True, on_delete=models.SET_NULL, related_name="opportunities"
+    )
+    # Differences the scouting job saw on the source page. Never applied automatically.
+    pending_changes = models.JSONField(default=dict, blank=True)
+    changes_noted_at = models.DateTimeField(null=True, blank=True)
     # Precomputed offline; filled by a management command later.
     embedding = models.JSONField(null=True, blank=True, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -270,6 +278,15 @@ class Opportunity(models.Model):
             return True
         return self.deadline is not None and self.deadline < timezone.localdate()
 
+    STALE_AFTER_DAYS = 30
+
+    @property
+    def is_stale(self):
+        """Not checked against the official page recently, or never."""
+        if self.last_verified is None:
+            return True
+        return (timezone.localdate() - self.last_verified).days > self.STALE_AFTER_DAYS
+
     @property
     def deadline_tone(self):
         """closed, urgent (a week or less), soon (a month or less), open or none."""
@@ -365,3 +382,59 @@ class UserData(models.Model):
 
     def __str__(self):
         return f"Saved data for {self.user}"
+
+
+class Source(models.Model):
+    """A web page the scouting job may read. The AI can propose one; only an
+    admin's approval makes it eligible for automatic checks."""
+
+    class Status(models.TextChoices):
+        PROPOSED = "proposed", "Proposed (waiting for approval)"
+        APPROVED = "approved", "Approved"
+        REJECTED = "rejected", "Rejected"
+
+    url = models.URLField(max_length=500, unique=True)
+    name = models.CharField(max_length=200, blank=True)
+    status = models.CharField(max_length=10, choices=Status.choices, default=Status.PROPOSED)
+    found_by = models.CharField(max_length=10, default="admin", editable=False)
+    note = models.TextField(blank=True, help_text="What the AI thought this page was, or your own note.")
+    last_checked = models.DateTimeField(null=True, blank=True)
+    last_hash = models.CharField(max_length=64, blank=True, editable=False)
+    last_error = models.CharField(max_length=300, blank=True, editable=False)
+    fail_count = models.PositiveSmallIntegerField(default=0, editable=False)
+    cache = models.JSONField(default=dict, blank=True, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["status", "-created_at"]
+
+    def __str__(self):
+        return self.name or self.url
+
+
+class ScoutLog(models.Model):
+    """One line per source check, so the admin can see what the job did."""
+
+    source = models.ForeignKey(Source, null=True, blank=True, on_delete=models.CASCADE, related_name="logs")
+    outcome = models.CharField(max_length=20)
+    detail = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+
+class Report(models.Model):
+    """A visitor says something on a listing is wrong."""
+
+    opportunity = models.ForeignKey(Opportunity, on_delete=models.CASCADE, related_name="reports")
+    message = models.TextField(max_length=1000)
+    contact = models.CharField(max_length=200, blank=True)
+    resolved = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["resolved", "-created_at"]
+
+    def __str__(self):
+        return f"Report on {self.opportunity}"

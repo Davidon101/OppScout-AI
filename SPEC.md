@@ -84,6 +84,7 @@ Shared partials are in `templates/partials/`; page-specific ones sit next to the
 | 7a | Organization portal | Built: 250 tests, 17-check Chromium run. Needs migration 0003. |
 | 6 | Tests, error handling, deployment hardening | Done locally: `check --deploy` clean apart from two deliberate HSTS warnings, gunicorn smoke test with DEBUG off (redirect, static, 404 page, CSRF, headers), 206 tests. **Not deployed yet.** See `DEPLOY.md`. |
 | 8 | Accounts | Built (v13): 271 tests, two-device browser check. Needs your Google and Brevo keys in Render (`ACCOUNTS.md`). Not yet tried with real Google or Brevo. |
+| 9 | Scouting | Built (v14, not pushed): safe fetcher, extractor with validation, source discovery, change review, weekly GitHub Action, report button, stale notice. 313 tests. Not yet run against real sites or live Gemini search. |
 | 7b | UI redesign | Done (v11). All pages restyled, checked in Chromium at 1280 and 390 px, no horizontal overflow. |
 | 7 | Evaluation, README, demo | |
 

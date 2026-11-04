@@ -26,6 +26,10 @@
     <p class="notice notice-warn">{% include "partials/icon.html" with name="alert" %}<span>{{ opp.closed_notice }}</span></p>
   {% endif %}
 
+  {% if opp.is_stale and not opp.closed_notice %}
+    <p class="notice notice-info">{% include "partials/icon.html" with name="clock" %}<span>This listing has not been checked against the official page recently{% if opp.last_verified %} (last checked {{ opp.last_verified|date:"j F Y" }}){% endif %}. Confirm the deadline and requirements there before you apply.</span></p>
+  {% endif %}
+
   <p class="posted-by">
     {% if opp.organization %}
       {% include "partials/icon.html" with name="building" %}
@@ -136,6 +140,18 @@
     </aside>
   </div>
 
-  <p class="small" style="margin-top:1.5rem">Details can change. Confirm everything with the provider before you apply.</p>
+  <details class="report" style="margin-top:1.5rem">
+    <summary>Report incorrect or out-of-date information</summary>
+    <form method="post" action="{% url 'opportunities:report' opp.slug %}" hx-post="{% url 'opportunities:report' opp.slug %}" hx-target="#report-result" hx-swap="innerHTML">
+      {% csrf_token %}
+      <div class="field"><label for="report-message">What is wrong?</label><textarea id="report-message" name="message" rows="3" maxlength="1000" required></textarea></div>
+      <div class="field"><label for="report-contact">Your email (optional, only if you want a reply)</label><input id="report-contact" name="contact" type="text" maxlength="200" autocomplete="email"></div>
+      <div class="hp" aria-hidden="true"><label>Leave this empty <input type="text" name="nickname" tabindex="-1" autocomplete="off"></label></div>
+      <button class="btn btn-ghost btn-sm" type="submit">Send report</button>
+    </form>
+    <div id="report-result" aria-live="polite"></div>
+  </details>
+
+  <p class="small" style="margin-top:1rem">Details can change. Confirm everything with the provider before you apply.</p>
 </article>
 {% endblock %}

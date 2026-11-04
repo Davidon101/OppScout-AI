@@ -29,4 +29,5 @@ urlpatterns = [
     path("saved/list/", views.saved_list, name="saved_list"),
     path("opportunities/<slug:slug>/gaps/", views.gap_analysis, name="gaps"),
     path("opportunities/<slug:slug>/check/", views.eligibility_check, name="check"),
+    path("opportunities/<slug:slug>/report/", views.report_error, name="report"),
 ]

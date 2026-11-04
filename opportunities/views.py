@@ -22,7 +22,7 @@ from ai_engine.regions import COUNTRY_NAMES
 from . import limits
 from .forms import ProfileForm
 from .services import get_provider
-from .models import Opportunity, OpportunityRequirement, UserData
+from .models import Opportunity, OpportunityRequirement, Report, UserData
 
 PAGE_SIZE = 12
 
@@ -448,3 +448,19 @@ def account_forget(request):
     """Remove the stored profile and saved list. The account itself stays."""
     UserData.objects.filter(user=request.user).delete()
     return redirect("opportunities:account_home")
+
+
+@require_POST
+def report_error(request, slug):
+    """A visitor says a listing is wrong. Stored for an admin; nothing is published."""
+    opp = get_object_or_404(Opportunity.objects.visible(), slug=slug)
+    if request.POST.get("nickname"):  # honeypot: a person never fills this
+        return render(request, "opportunities/partials/report_result.html", {"ok": True})
+    message = " ".join(request.POST.get("message", "").split())[:1000]
+    contact = request.POST.get("contact", "").strip()[:200]
+    if len(message) < 10:
+        return render(request, "opportunities/partials/report_result.html", {"error": "Please say what is wrong, in a sentence or two."})
+    if not limits.within_limit(request, "report", 5, per="hour"):
+        return render(request, "opportunities/partials/report_result.html", {"error": "Too many reports from this connection. Please try again later."})
+    Report.objects.create(opportunity=opp, message=message, contact=contact)
+    return render(request, "opportunities/partials/report_result.html", {"ok": True})

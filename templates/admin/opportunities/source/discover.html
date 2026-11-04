@@ -1,0 +1,10 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<div id="content-main">
+  <p>Describe what to look for. Gemini searches the web, then each page it finds is opened and read. Only pages that describe one real opportunity are saved, as <b>proposed</b> sources. Nothing is checked automatically until you approve it. This takes up to a minute.</p>
+  <form method="post">{% csrf_token %}
+    <p><input type="text" name="topic" size="70" maxlength="300" placeholder="e.g. fully funded master's scholarships for Nigerian graduates" required></p>
+    <p><input type="submit" class="default" value="Search"></p>
+  </form>
+</div>
+{% endblock %}

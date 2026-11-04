@@ -1,0 +1,39 @@
+name: Scout opportunities
+
+# Runs weekly, and on demand from the Actions tab. It reads only sources you
+# approved in Django Admin, saves drafts and proposed changes, and publishes
+# nothing. See SCOUTING.md.
+on:
+  schedule:
+    - cron: "0 6 * * 1" # Mondays, 06:00 UTC
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: "Optional: ask the AI to find new sources for this topic"
+        required: false
+
+jobs:
+  scout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Find new sources (only when a topic was typed)
+        if: ${{ github.event.inputs.topic != '' }}
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          SECRET_KEY: not-a-real-secret-ci-only
+          TOPIC: ${{ github.event.inputs.topic }}
+        run: python manage.py discover_sources "$TOPIC"
+      - name: Check approved sources
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          SECRET_KEY: not-a-real-secret-ci-only
+        run: python manage.py scout --max 8

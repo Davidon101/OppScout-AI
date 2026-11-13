@@ -235,3 +235,51 @@ class ReportAdmin(admin.ModelAdmin):
     @admin.action(description="Mark selected as resolved")
     def mark_resolved(self, request, queryset):
         self.message_user(request, f"{queryset.update(resolved=True)} report(s) resolved.")
+
+
+# ---- admin home: a "needs your attention" panel -------------------------------
+
+admin.site.site_header = "OppScout admin"
+admin.site.site_title = "OppScout admin"
+admin.site.index_title = "Dashboard"
+
+_default_index = admin.site.index
+
+
+def _attention_cards():
+    """Counts that link to the matching, already-filtered admin lists."""
+    def url(name, query):
+        return reverse(f"admin:opportunities_{name}_changelist") + query
+
+    changes = Opportunity.objects.exclude(pending_changes={}).count()
+    return [
+        {"label": "Listings waiting for approval", "todo": True,
+         "count": Opportunity.objects.filter(status=Opportunity.Status.PENDING).count(),
+         "url": url("opportunity", "?status__exact=pending")},
+        {"label": "Sources waiting for approval", "todo": True,
+         "count": Source.objects.filter(status=Source.Status.PROPOSED).count(),
+         "url": url("source", "?status__exact=proposed")},
+        {"label": "Listings with changes to review", "todo": True, "count": changes,
+         "url": url("opportunity", "")},
+        {"label": "Unresolved error reports", "todo": True,
+         "count": Report.objects.filter(resolved=False).count(),
+         "url": url("report", "?resolved__exact=0")},
+        {"label": "Organizations not verified", "todo": True,
+         "count": Organization.objects.filter(verified=False).count(),
+         "url": url("organization", "?verified__exact=0")},
+        {"label": "Live listings", "todo": False,
+         "count": Opportunity.objects.filter(status=Opportunity.Status.PUBLISHED).count(),
+         "url": url("opportunity", "?status__exact=published")},
+    ]
+
+
+def _index_with_cards(request, extra_context=None):
+    context = dict(extra_context or {})
+    try:
+        context["os_cards"] = _attention_cards()
+    except Exception:  # the admin home must never fail because of the panel
+        context["os_cards"] = []
+    return _default_index(request, context)
+
+
+admin.site.index = _index_with_cards

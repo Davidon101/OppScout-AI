@@ -1,0 +1,180 @@
+/* OppScout admin skin. Re-colours Django's admin with the app's own palette.
+   It overrides Django's CSS variables, so the admin keeps working as before. */
+
+:root,
+html[data-theme="light"],
+html[data-theme="dark"] {
+  --primary: #0f1535;
+  --secondary: #2447f5;
+  --accent: #f4a21b;
+  --primary-fg: #ffffff;
+
+  --body-fg: #3a4260;
+  --body-bg: #f4f6fb;
+  --body-quiet-color: #667089;
+  --body-loud-color: #12172f;
+
+  --header-color: #c5cbea;
+  --header-branding-color: #ffffff;
+  --header-bg: #0f1535;
+  --header-link-color: #ffffff;
+
+  --breadcrumbs-fg: #c5cbea;
+  --breadcrumbs-link-fg: #ffffff;
+  --breadcrumbs-bg: #1736c9;
+
+  --link-fg: #2447f5;
+  --link-hover-color: #1736c9;
+  --link-selected-fg: #1736c9;
+
+  --hairline-color: #e1e5f0;
+  --border-color: #cdd3e4;
+  --error-fg: #c7362b;
+
+  --message-success-bg: #e4f5ee;
+  --message-warning-bg: #fff3dc;
+  --message-error-bg: #fce9e7;
+
+  --darkened-bg: #f4f6fb;
+  --selected-bg: #e9edff;
+  --selected-row: #fff3dc;
+
+  --button-fg: #ffffff;
+  --button-bg: #2447f5;
+  --button-hover-bg: #1736c9;
+  --default-button-bg: #2447f5;
+  --default-button-hover-bg: #1736c9;
+  --close-button-bg: #667089;
+  --close-button-hover-bg: #3a4260;
+
+  --delete-button-bg: #c7362b;
+  --delete-button-hover-bg: #a52b22;
+
+  --object-tools-fg: #ffffff;
+  --object-tools-bg: #2447f5;
+  --object-tools-hover-bg: #1736c9;
+
+  --font-family-primary: "Public Sans", "Segoe UI", system-ui, sans-serif;
+  color-scheme: light;
+}
+
+body { background: var(--body-bg); }
+
+/* The app is light only, so hide Django's theme switch. */
+.theme-toggle { display: none; }
+
+/* header */
+#header {
+  padding: 14px 24px;
+  background: var(--header-bg);
+}
+#branding h1 {
+  font-family: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+#branding h1 a:link, #branding h1 a:visited { color: #ffffff; }
+#branding h1 span { color: #f4a21b; }
+#user-tools { font-size: 0.8rem; }
+
+/* headings and cards */
+h1, h2, h3, .module h2, .module caption {
+  font-family: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+}
+#content h1 { color: #12172f; font-weight: 700; letter-spacing: -0.01em; }
+
+.module {
+  background: #ffffff;
+  border: 1px solid var(--hairline-color);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(18, 23, 47, 0.05);
+}
+.module h2, .module caption, .inline-group h2 {
+  background: #0f1535;
+  color: #ffffff;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+.module h2 a, .module caption a { color: #ffffff; }
+#content-related .module { background: #ffffff; }
+
+/* tables and lists */
+table { border-collapse: collapse; }
+thead th, thead th a:link, thead th a:visited { color: #12172f; }
+thead th { background: #f4f6fb; border-bottom: 1px solid var(--border-color); }
+tbody tr:hover td, tbody tr:hover th { background: #f4f6fb; }
+#changelist { border-radius: 14px; }
+.results { background: #ffffff; border-radius: 12px; border: 1px solid var(--hairline-color); }
+#changelist-filter {
+  background: #ffffff;
+  border: 1px solid var(--hairline-color);
+  border-radius: 14px;
+}
+#changelist-filter h2 { background: #f4f6fb; color: #12172f; }
+#changelist-filter li.selected a { color: #2447f5; font-weight: 700; }
+
+/* buttons and inputs */
+.button, input[type=submit], input[type=button], .submit-row input, a.button {
+  border-radius: 10px;
+  font-weight: 600;
+}
+.object-tools a:link, .object-tools a:visited { border-radius: 999px; padding: 6px 16px; }
+.object-tools a.addlink, .object-tools a.addlink:visited { padding-right: 34px; background-position: right 12px center; }
+input[type=text], input[type=password], input[type=email], input[type=url],
+input[type=number], input[type=date], textarea, select {
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background: #ffffff;
+  color: #12172f;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: #2447f5;
+  box-shadow: 0 0 0 3px rgba(36, 71, 245, 0.2);
+  outline: none;
+}
+.messagelist li { border-radius: 10px; }
+
+/* dashboard: the "needs attention" panel at the top of the admin home */
+.os-dash { margin: 0 0 28px; }
+.os-dash h2 {
+  margin: 0 0 4px;
+  font-size: 1.15rem;
+  color: #12172f;
+  font-family: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+}
+.os-dash p.os-sub { margin: 0 0 14px; color: var(--body-quiet-color); font-size: 0.9rem; }
+.os-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 12px;
+}
+a.os-card, a.os-card:visited {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 18px;
+  background: #ffffff;
+  border: 1px solid var(--hairline-color);
+  border-radius: 14px;
+  text-decoration: none;
+  box-shadow: 0 1px 2px rgba(18, 23, 47, 0.05);
+}
+a.os-card:hover { border-color: #2447f5; }
+.os-card .os-num {
+  font-family: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  font-size: 2.1rem;
+  font-weight: 800;
+  line-height: 1;
+  color: #12172f;
+}
+.os-card .os-label { font-size: 0.85rem; color: var(--body-quiet-color); }
+.os-card.os-todo { border-color: #f4a21b; background: #fff8ea; }
+.os-card.os-todo .os-num { color: #7d5200; }
+.os-card.os-ok .os-num { color: #15805a; }
+
+@media (max-width: 767px) {
+  #header { padding: 12px 16px; }
+  .os-cards { grid-template-columns: repeat(2, 1fr); }
+}

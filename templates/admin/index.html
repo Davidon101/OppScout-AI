@@ -1,0 +1,19 @@
+{% extends "admin/index.html" %}
+
+{% block content %}
+{% if os_cards %}
+<section class="os-dash" aria-label="Needs your attention">
+  <h2>Needs your attention</h2>
+  <p class="os-sub">Tap a card to open the list, already filtered.</p>
+  <div class="os-cards">
+    {% for c in os_cards %}
+    <a class="os-card {% if c.count and c.todo %}os-todo{% elif not c.todo %}os-ok{% endif %}" href="{{ c.url }}">
+      <span class="os-num">{{ c.count }}</span>
+      <span class="os-label">{{ c.label }}</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+{{ block.super }}
+{% endblock %}
